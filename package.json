@@ -1,7 +1,11 @@
 {
   "name": "react-mc-launcher",
-  "version": "0.1.0",
+  "version": "1.0",
   "private": true,
+  "main": "public/main.js",
+  "author": {
+    "name": "dd_06"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -9,13 +13,19 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "react-i18next": "^11.8.15",
+    "react-router-dom": "^5.2.0",
+    "electron-localshortcut": "^3.2.1",
+    "i18next": "^20.2.2",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "concurrently \"SET BROWSER=none&&npm start\" npm:electron",
+    "electron": "wait-on tcp:3000 && electron ."
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +44,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "electron": "^13.1.6",
+    "electron-is-dev": "^2.0.0",
+    "wait-on": "^6.0.0"
   }
 }
