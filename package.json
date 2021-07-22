@@ -2,7 +2,7 @@
   "name": "react-mc-launcher",
   "version": "1.0",
   "private": true,
-  "main": "public/main.js",
+  "main": "main.js",
   "author": {
     "name": "dd_06"
   },
@@ -10,13 +10,13 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "react-i18next": "^11.8.15",
-    "react-router-dom": "^5.2.0",
     "electron-localshortcut": "^3.2.1",
     "i18next": "^20.2.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-i18next": "^11.8.15",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

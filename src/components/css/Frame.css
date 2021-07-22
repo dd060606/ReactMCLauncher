@@ -1,0 +1,154 @@
+#frame-bar, #frame-bar div {
+    margin: 0px;
+    padding: 0px;
+}
+
+
+#frame-bar {
+    position: relative;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 1s ease;
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-user-select: none;
+}
+#frame-top {
+    height: 0px;
+    width: 100%;
+    -webkit-app-region: no-drag;
+}
+#frame-content {
+    display: flex;
+    height: 22px
+}
+.vert-frame {
+    width: 2px;
+    -webkit-app-region: no-drag;
+}
+
+#frame-content-windows {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    -webkit-app-region: drag;
+}
+
+#frame-content-darwin {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    -webkit-app-region: drag;
+}
+
+#frame-title-dock {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 10px;
+}
+#frame-title-dock > img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+#frame-title {
+    font-size: 14px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 800;
+    text-align: center;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+#frame-buttons-windows {
+    -webkit-app-region: no-drag !important;
+    position: relative;
+    top: -2px;
+    right: -2px;
+    height: 22px;
+}
+#frame-buttons-windows > .frame-button:not(:first-child) {
+    margin-left: -4px;
+}
+
+#frame-buttons-darwin {
+    -webkit-app-region: no-drag !important;
+    position: relative;
+    top: -1px;
+    right: -1px;
+}
+
+.frame-button {
+    background: none;
+    border: none;
+    height: 22px;
+    width: 39px;
+    cursor: pointer;
+}
+.frame-button:hover,
+.frame-button:focus {
+    background: rgba(189, 189, 189, 0.43);
+}
+.frame-button:active {
+    background: rgba(156, 156, 156, 0.43);
+}
+.frame-button:focus {
+    outline: 0px;
+}
+
+#frame-button_close:hover,
+#frame-button_close:focus {
+    background: rgba(255, 53, 53, 0.61) !important;
+}
+#frame-button_close:active {
+    background: rgba(235, 0, 0, 0.61) !important;
+}
+
+.frame-button-darwin {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    border: 0px;
+    margin-left: 5px;
+    -webkit-app-region: no-drag !important;
+    cursor: pointer;
+}
+.frame-button-darwin:focus {
+    outline: 0px;
+}
+
+#frame-button-darwin {
+    background-color: #e74c32;
+}
+#frame-button-darwin_close:hover,
+#frame-button-darwin_close:focus {
+    background-color: #FF9A8A;
+}
+#frame-button-darwin_close:active {
+    background-color: #ff8d7b;
+}
+
+#frame-button-darwin_minimize {
+    background-color: #fed045;
+}
+#frame-button-darwin_minimize:hover,
+#frame-button-darwin_minimize:focus {
+    background-color: #FFE9A9;
+}
+#frame-button-darwin_minimize:active {
+    background-color: #ffde7b;
+}
+
+#frame-button-darwin_restoredown {
+    background-color: #96e734;
+}
+#frame-button-darwin_restoredown:hover,
+#frame-button-darwin_restoredown:focus {
+    background-color: #D6FFA6;
+}
+#frame-button-darwin_restoredown:active {
+    background-color: #bfff76;
+}
