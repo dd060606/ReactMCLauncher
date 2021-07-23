@@ -67,4 +67,4 @@ We reserve the right to update these conditions at any time, please check back p
 
 ---
 
-Like the project? Leave a ⭐ star on the repository!
+#### Like the project? Leave a ⭐ star on the repository!
