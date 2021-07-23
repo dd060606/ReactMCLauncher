@@ -1,18 +1,20 @@
 import { Component } from "react"
 import { withTranslation } from 'react-i18next'
 import "../i18n"
+import { Button, CircularProgress } from "@material-ui/core"
 import "./css/Auth.css"
 
 class Auth extends Component {
 
     state = {
         showPassword: false,
-        currentAuthType: "mojang"
+        currentAuthType: "mojang",
+        isAuthenticating: false
     }
 
     render() {
         const { t } = this.props
-        const { showPassword, currentAuthType } = this.state
+        const { showPassword, currentAuthType, isAuthenticating } = this.state
         return (
             <div className="auth-content">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/logo.png`} alt="logo" />
@@ -39,6 +41,8 @@ class Auth extends Component {
 
                         </div>
                     </div>
+
+                    <Button variant="contained" className="login-button">{isAuthenticating ? <CircularProgress color="primary" size={20} /> : t("auth.login")}</Button>
 
                 </div>
             </div>

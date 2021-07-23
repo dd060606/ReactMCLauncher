@@ -18,6 +18,7 @@
     width: 400px;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 15px;
+    font-family: "Open Sans", sans-serif;
 }
 .auth-box h2 {
     color: white;
@@ -89,4 +90,20 @@
     margin-left: 2px;
     margin-right: 5px;
 }
+.auth-box .login-button {
+    background-color: #56B5FC;
+    text-transform: none;
+    color: white;
+    margin-bottom: 20px;
+    width: 150px;
+    height: 30px;
+    font-size: 15px;
+}
+.auth-box .login-button:hover {
+    background-color: #46A9F8;
+}
 
+
+.auth-box .MuiCircularProgress-colorPrimary {
+    color: white !important;
+}
