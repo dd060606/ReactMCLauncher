@@ -4,6 +4,10 @@
 
 Custom launcher for modded minecraft written in Electron with React.
 
+## Features
+
+In development...
+
 ## Development
 
 This section details the setup of a basic developmentment environment.
