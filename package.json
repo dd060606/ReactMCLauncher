@@ -1,15 +1,20 @@
 {
   "name": "react-mc-launcher",
-  "version": "1.0",
+  "productName": "React MCLauncher",
+  "version": "1.0.0",
   "private": true,
   "main": "main.js",
   "author": {
     "name": "dd_06"
   },
+  "description": "D",
+  "homepage": "./",
   "dependencies": {
+    "@material-ui/core": "^4.12.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "electron-is-dev": "^2.0.0",
     "electron-localshortcut": "^3.2.1",
     "i18next": "^20.2.2",
     "react": "^17.0.2",
@@ -20,12 +25,15 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "dev": "concurrently \"SET BROWSER=none&&npm start\" npm:electron",
-    "electron": "wait-on tcp:3000 && electron ."
+    "electron": "wait-on tcp:3000 && electron .",
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test --env=jsdom",
+    "react-eject": "react-scripts eject",
+    "electron-build": "electron-builder",
+    "release": "npm run react-build && electron-builder --publish=always",
+    "build": "npm run react-build && npm run electron-build",
+    "start": "concurrently \"SET BROWSER=none&&npm run react-start\" npm:electron"
   },
   "eslintConfig": {
     "extends": [
@@ -48,7 +56,48 @@
   "devDependencies": {
     "concurrently": "^6.2.0",
     "electron": "^13.1.6",
-    "electron-is-dev": "^2.0.0",
+    "electron-builder": "^22.11.7",
     "wait-on": "^6.0.0"
+  },
+  "build": {
+    "appId": "fr.dd06.reactmclauncher",
+    "productName": "React MCLauncher",
+    "artifactName": "${productName}.${ext}",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "./main.js",
+      "public/",
+      "./preload.js"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "asar": true,
+    "extends": null,
+    "win": {
+      "target": "portable",
+      "icon": "assets/images/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.games",
+      "icon": "assets/images/icon.icns",
+      "type": "distribution"
+    },
+    "linux": {
+      "target": "AppImage",
+      "maintainer": "dd_06",
+      "vendor": "ReactMCLauncher",
+      "synopsis": "React Minecraft launcher",
+      "description": "React Minecraft launcher",
+      "category": "Game"
+    },
+    "deb": {
+      "compression": "xz",
+      "packageCategory": "Games",
+      "priority": "optional"
+    },
+    "compression": "maximum"
   }
 }

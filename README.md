@@ -33,7 +33,7 @@ This section details the setup of a basic developmentment environment.
 **Launch Application**
 
 ```console
-> npm run dev
+> npm start
 ```
 
 ---
@@ -43,18 +43,8 @@ This section details the setup of a basic developmentment environment.
 To build for your current platform.
 
 ```console
-> npm run dist
+> npm run build
 ```
-
-Build for a specific platform.
-
-| Platform    | Command              |
-| ----------- | -------------------- |
-| Windows x64 | `npm run dist:win`   |
-| macOS       | `npm run dist:mac`   |
-| Linux x64   | `npm run dist:linux` |
-
-Builds for macOS may not work on Windows/Linux and vice-versa.
 
 ---
 

@@ -27,6 +27,7 @@ class Auth extends Component {
                         <div className="field">
                             <i className="fas fa-envelope"></i>
                             <input type="text" name="username-field" id="username-field" placeholder={t("auth.email")} style={{ marginRight: showPassword ? 22 : 20 }} />
+                            <span class="underline-animation"></span>
 
 
                         </div>
@@ -34,9 +35,11 @@ class Auth extends Component {
                             <i className="fas fa-lock-alt"></i>
                             <input type={`${showPassword ? "text" : "password"}`} name="password-field" id="password-field" placeholder={t("auth.password")} />
                             <i className={`fal ${showPassword ? "fa-eye" : "fa-eye-slash"}`} onClick={() => this.setState({ showPassword: !showPassword })}></i>
+                            <span class="underline-animation"></span>
 
                         </div>
                     </div>
+
                 </div>
             </div>
         )

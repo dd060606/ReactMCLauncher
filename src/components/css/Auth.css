@@ -29,9 +29,9 @@
     border-radius: 7px;
     height: 25px;
     width: 250px;
-    border: 1px solid white;
     margin-bottom: 30px;
 }
+
 .auth-box .field> i {
     color: white;
     margin-left: 5px;
@@ -46,8 +46,17 @@
     background-color: transparent;
     height: 23px;
     width:100%;
+    border-bottom: solid 1px transparent;
+    transition: border 0.2s ease-in-out;
+}
+.auth-box .field > input:focus  {
+    border-color: white;
+    transition: border 0.3s ease-in-out;
 }
 
+.auth-box .field > input:focus + .underline-animation{
+    left: 0;
+  }
 .auth-box .field > input::placeholder{
     color: white;
 }
