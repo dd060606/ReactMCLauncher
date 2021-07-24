@@ -1,4 +1,3 @@
-
 const { app, BrowserWindow } = require("electron")
 const path = require("path")
 const fs = require("fs")
@@ -6,6 +5,8 @@ const isDev = require("electron-is-dev")
 const electronLocalshortcut = require("electron-localshortcut")
 
 const mainIPC = require("./public/assets/js/mainIPC")
+const ConfigManager = require('./public/assets/js/configmanager')
+const login = require("./public/assets/js/login")
 
 
 
@@ -13,6 +14,7 @@ let win
 
 
 function createWindow() {
+
     win = new BrowserWindow({
         width: 1280,
         height: 729,
@@ -21,7 +23,7 @@ function createWindow() {
             contextIsolation: true,
             preload: path.join(__dirname, "preload.js")
         },
-        title: LAUNCHER_NAME,
+        title: ConfigManager.launcherName,
         icon: path.join(__dirname, "public", "assets", "images", "logo.png")
     })
 
@@ -50,12 +52,19 @@ function createWindow() {
         win = null
     })
 
-    mainIPC.initMainIPC()
     exports.win = win
+
+
 }
 
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+    // Load ConfigManager
+    ConfigManager.load()
+    createWindow()
+    mainIPC.initMainIPC()
+    login.initAuthIPC()
+})
 
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
@@ -69,4 +78,3 @@ app.on("activate", () => {
     }
 })
 
-exports.LAUNCHER_NAME = LAUNCHER_NAME

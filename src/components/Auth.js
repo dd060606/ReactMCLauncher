@@ -16,10 +16,93 @@ class Auth extends Component {
         password: "",
     }
 
-    openErrorBox(message) {
+    componentDidMount() {
+        window.ipc.receive("mojang-auth-err", err => {
+            this.openErrorBox(this.resolveError(err).desc, this.resolveError(err).title)
+        })
+        window.ipc.receive("mojang-auth-success", () => this.props.history.push("/launcher"))
+
+    }
+
+    /**
+ * Parses an error and returns a user-friendly title and description
+ * for our error overlay.
+ * 
+ * @param {Error | {cause: string, error: string, errorMessage: string}} err A Node.js
+ * error or Mojang error response.
+ */
+    resolveError(err) {
         const { t } = this.props
+        // Mojang Response => err.cause | err.error | err.errorMessage
+        // Node error => err.code | err.message
+        if (err.cause != null && err.cause === 'UserMigratedException') {
+            return {
+                title: t('auth.errors.userMigrated.title'),
+                desc: t('auth.errors.userMigrated.desc')
+            }
+        } else {
+            if (err.error != null) {
+                if (err.error === 'ForbiddenOperationException') {
+                    if (err.errorMessage != null) {
+                        if (err.errorMessage === 'Invalid credentials. Invalid username or password.') {
+                            return {
+                                title: t('auth.errors.invalidCredentials.title'),
+                                desc: t('auth.errors.invalidCredentials.desc')
+                            }
+                        } else if (err.errorMessage === 'Invalid credentials.') {
+                            return {
+                                title: t('auth.errors.rateLimit.title'),
+                                desc: t('auth.errors.rateLimit.desc')
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Request errors (from Node).
+                if (err.code != null) {
+                    if (err.code === 'ENOENT') {
+                        // No Internet.
+                        return {
+                            title: t('auth.errors.noInternet.title'),
+                            desc: t('auth.errors.noInternet.desc')
+                        }
+                    } else if (err.code === 'ENOTFOUND') {
+                        // Could not reach server.
+                        return {
+                            title: t('auth.errors.authDown.title'),
+                            desc: t('auth.errors.authDown.desc')
+                        }
+                    }
+                }
+            }
+        }
+        if (err.message != null) {
+            if (err.message === 'NotPaidAccount') {
+                return {
+                    title: t('auth.errors.notPaid.title'),
+                    desc: t('auth.errors.notPaid.desc')
+                }
+            } else {
+                // Unknown error with request.
+                return {
+                    title: t('auth.errors.unknown.title'),
+                    desc: err.message
+                }
+            }
+        } else {
+            // Unknown Mojang error.
+            return {
+                title: err.error,
+                desc: err.errorMessage
+            }
+        }
+    }
+
+    openErrorBox(message, title = "") {
+        const { t } = this.props
+        title = !title ? t("auth.errors.error") : title
         Swal.fire({
-            title: t("auth.errors.error"),
+            title: title,
             html: `<p style="color: white;">${message}</p>`,
             icon: "error",
             confirmButtonColor: "#54c2f0",
@@ -49,7 +132,7 @@ class Auth extends Component {
             this.openErrorBox(t("auth.errors.wrong-username"))
         }
         else {
-
+            window.ipc.send("mojang-login", { username: email, password: password })
         }
 
 
@@ -72,7 +155,7 @@ class Auth extends Component {
                         <div className="field" >
                             <i className="fas fa-envelope"></i>
                             <input disabled={isAuthenticating} type="text" name="username-field" id="username-field" placeholder={t("auth.email")} value={email} onChange={event => this.setState({ email: event.target.value })} />
-                            <span class="underline-animation" style={{}}></span>
+                            <span className="underline-animation" ></span>
 
 
                         </div>
@@ -80,7 +163,7 @@ class Auth extends Component {
                             <i className="fas fa-lock-alt"></i>
                             <input disabled={isAuthenticating} type={`${showPassword ? "text" : "password"}`} name="password-field" id="password-field" placeholder={t("auth.password")} value={password} onChange={event => this.setState({ password: event.target.value })} />
                             <i className={`fal ${showPassword ? "fa-eye" : "fa-eye-slash"}`} onClick={() => this.setState({ showPassword: !showPassword })}></i>
-                            <span class="underline-animation"></span>
+                            <span className="underline-animation"></span>
 
                         </div>
                     </div>

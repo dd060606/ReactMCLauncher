@@ -1,5 +1,7 @@
-const { app } = require("electron")
 const fs = require("fs-extra")
+const os = require("os")
+const path = require("path")
+const { app } = require("electron")
 exports.launcherName = "ReactMCLauncher"
 
 const sysRoot = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "/Library/Application Support" : process.env.HOME)
@@ -7,7 +9,7 @@ const dataPath = path.join(sysRoot, exports.launcherName)
 
 const launcherDir = process.env.CONFIG_DIRECT_PATH || app.getPath("userData")
 
-const logger = require('./loggerutil')('%c[ConfigManager]', 'color: #a02d2a; font-weight: bold')
+const logger = require('./logger')('%c[ConfigManager]', 'color: #a02d2a; font-weight: bold')
 
 
 
@@ -50,7 +52,6 @@ const DEFAULT_CONFIG = {
         }
     },
     clientToken: null,
-    currentAccount: null,
     accounts: {},
 }
 const configPath = path.join(exports.getLauncherDirectory(), 'config.json')
@@ -104,7 +105,7 @@ exports.load = function () {
         } else {
             doLoad = false
             config = DEFAULT_CONFIG
-            exports.save()
+            exports.saveConfig()
         }
     }
     if (doLoad) {
@@ -177,6 +178,7 @@ exports.getClientToken = function () {
 exports.setClientToken = function (clientToken) {
     config.clientToken = clientToken
 }
+
 
 
 /**

@@ -1,6 +1,6 @@
 const configManager = require("./configmanager")
 const ipc = require("electron").ipcMain
-
+const main = require("../../../main")
 
 exports.initMainIPC = () => {
 

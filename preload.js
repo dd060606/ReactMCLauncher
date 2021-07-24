@@ -3,12 +3,11 @@ const {
     ipcRenderer
 } = require("electron")
 
-const logger = require('./public/assets/logger')('%c[Preloader]', 'color: #a02d2a; font-weight: bold')
+const logger = require('./public/assets/js/logger')('%c[Preloader]', 'color: #a02d2a; font-weight: bold')
 
 logger.log('Loading..')
 
-// Load ConfigManager
-ConfigManager.load()
+
 
 contextBridge.exposeInMainWorld(
     "ipc", {
