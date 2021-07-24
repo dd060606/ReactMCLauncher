@@ -7,7 +7,7 @@ const electronLocalshortcut = require("electron-localshortcut")
 
 const mainIPC = require("./public/assets/js/mainIPC")
 
-const LAUNCHER_NAME = "ReactMCLauncher"
+
 
 let win
 

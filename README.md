@@ -3,6 +3,7 @@
 <h1 align="center">React MCLauncher</h1>
 
 Custom launcher for modded minecraft written in Electron with React.
+This launcher is based on [HeliosLauncher][helioslauncher]
 
 ## Features
 
@@ -64,3 +65,4 @@ We reserve the right to update these conditions at any time, please check back p
 #### Like the project? Leave a ⭐ star on the repository!
 
 [nodejs]: https://nodejs.org/en/ "Node.js"
+[helioslauncher]: https://github.com/dscalzi/HeliosLauncher "Helios Launcher"

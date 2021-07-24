@@ -1,8 +1,14 @@
 {
   "auth": {
+    "errors": {
+      "error": "Error",
+      "wrong-username": "Wrong username",
+      "complete-all-fields": "Please complete all fields!"
+    },
     "authentication": "Authentication",
     "login": "Login",
     "email": "E-mail",
-    "password": "Password"
+    "password": "Password",
+    "remember-me": "Remember Me"
   }
 }

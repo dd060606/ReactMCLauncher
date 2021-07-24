@@ -1,3 +1,4 @@
+
 .auth-content {
     display: flex;
     margin-top: 50px;
@@ -29,7 +30,7 @@
     align-items: center;
     border-radius: 7px;
     height: 25px;
-    width: 250px;
+    width: 300px;
     margin-bottom: 30px;
 }
 
@@ -37,6 +38,8 @@
     color: white;
     margin-left: 5px;
     margin-right: 5px;
+    font-size: 20px;
+
 }
 .auth-box .field > input{
     border:none;
@@ -44,6 +47,7 @@
     color: white;
     outline: none;
     text-align: center;
+    font-size: 16px;
     background-color: transparent;
     height: 23px;
     width:100%;
@@ -60,6 +64,9 @@
   }
 .auth-box .field > input::placeholder{
     color: white;
+}
+.auth-box #username-field {
+    margin-right: 36px;
 }
 
 .auth-box .auth-selector {
@@ -94,10 +101,10 @@
     background-color: #56B5FC;
     text-transform: none;
     color: white;
-    margin-bottom: 20px;
     width: 150px;
-    height: 30px;
-    font-size: 15px;
+    height: 40px;
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 .auth-box .login-button:hover {
     background-color: #46A9F8;
@@ -106,4 +113,8 @@
 
 .auth-box .MuiCircularProgress-colorPrimary {
     color: white !important;
+}
+.auth-box .remember-me-label {
+    color: white;
+    margin-bottom: 15px;
 }

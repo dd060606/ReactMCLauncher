@@ -1,8 +1,14 @@
 {
   "auth": {
+    "errors": {
+      "error": "Erreur",
+      "wrong-username": "Identifiant invalide !",
+      "complete-all-fields": "Merci de remplir tous les champs !"
+    },
     "authentication": "Authentification",
     "login": "Connexion",
     "email": "E-mail",
-    "password": "Mot de passe"
+    "password": "Mot de passe",
+    "remember-me": "Se souvenir de moi"
   }
 }

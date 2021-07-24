@@ -1,11 +1,11 @@
-const main = require("../../../main")
+const configManager = require("./configmanager")
 const ipc = require("electron").ipcMain
 
 
 exports.initMainIPC = () => {
 
     //Sync utils
-    ipc.on("get-launcher-name", (event) => { event.returnValue = main.LAUNCHER_NAME })
+    ipc.on("get-launcher-name", (event) => { event.returnValue = configManager.launcherName })
     ipc.on("get-platform-name", (event) => { event.returnValue = process.platform })
 
 
