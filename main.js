@@ -29,7 +29,6 @@ function createWindow() {
 
 
 
-
     win.loadURL(
         isDev
             ? "http://localhost:3000"

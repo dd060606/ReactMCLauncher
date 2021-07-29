@@ -224,13 +224,14 @@ exports.updateAuthAccount = function (uuid, accessToken) {
  * 
  * @returns {Object} The authenticated account object created by this action.
  */
-exports.addAuthAccount = function (uuid, accessToken, username, displayName) {
+exports.addAuthAccount = function (uuid, accessToken, username, displayName, authType) {
     config.selectedAccount = uuid
     config.accounts[uuid] = {
         accessToken,
         username: username.trim(),
         uuid: uuid.trim(),
-        displayName: displayName.trim()
+        displayName: displayName.trim(),
+        authType: authType
     }
     return config.accounts[uuid]
 }

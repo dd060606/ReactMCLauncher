@@ -1,0 +1,25 @@
+{
+    "config": {
+        "java": {
+            "minRAM": "4G",
+            "maxRAM": "4G",
+            "executable": null,
+            "jvmOptions": [
+                "-XX:+UseConcMarkSweepGC",
+                "-XX:+CMSIncrementalMode",
+                "-XX:-UseAdaptiveSizePolicy",
+                "-Xmn128M"
+            ]
+        },
+        "game": {
+            "autoConnect": true,
+            "launchDetached": true
+        },
+        "launcher": {
+            "dataDirectory": "C:\\Users\\dd06a\\AppData\\Roaming\\ReactMCLauncher"
+        }
+    },
+    "clientToken": null,
+    "currentAccount": null,
+    "accounts": {}
+}

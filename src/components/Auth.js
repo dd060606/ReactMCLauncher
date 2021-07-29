@@ -20,7 +20,10 @@ class Auth extends Component {
         window.ipc.receive("mojang-auth-err", err => {
             this.openErrorBox(this.resolveError(err).desc, this.resolveError(err).title)
         })
-        window.ipc.receive("mojang-auth-success", () => this.props.history.push("/launcher"))
+        window.ipc.receive("microsoft-auth-err", err => {
+            this.openErrorBox(err)
+        })
+        window.ipc.receive("auth-success", () => this.props.history.push("/launcher"))
 
     }
 
@@ -138,6 +141,15 @@ class Auth extends Component {
 
     }
 
+    handleMicrosoftLogin = () => {
+        const { isAuthenticating } = this.state
+        if (!isAuthenticating) {
+            this.setState({ isAuthenticating: true })
+            window.ipc.send("microsoft-login")
+        }
+
+    }
+
     render() {
         const { t } = this.props
         const { showPassword, currentAuthType, isAuthenticating, rememberMe, email, password } = this.state
@@ -148,7 +160,7 @@ class Auth extends Component {
                     <h2>{t("auth.authentication")}</h2>
                     <div className="auth-selector">
                         <div className="auth-type" style={{ border: `2px solid ${currentAuthType === "mojang" ? "#56B5FC" : "white"}` }} ><img src={`${process.env.PUBLIC_URL}/assets/images/mojang.png`} alt="mojang" width={15} /> Mojang</div>
-                        <div className="auth-type" style={{ border: `2px solid ${currentAuthType === "microsoft" ? "#56B5FC" : "white"}` }}><img src={`${process.env.PUBLIC_URL}/assets/images/microsoft.png`} alt="microsoft" width={15} /> Microsoft</div>
+                        <div className="auth-type" onClick={this.handleMicrosoftLogin} style={{ border: `2px solid ${currentAuthType === "microsoft" ? "#56B5FC" : "white"}` }}><img src={`${process.env.PUBLIC_URL}/assets/images/microsoft.png`} alt="microsoft" width={15} /> Microsoft</div>
 
                     </div>
                     <div className="fields">
