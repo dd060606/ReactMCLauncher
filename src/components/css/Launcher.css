@@ -1,0 +1,86 @@
+.launcher-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Open Sans", sans-serif;
+    height: 90%;
+}
+.launcher-content img {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
+.launcher-content > img {
+    width: 100px;
+
+}
+.launcher-content .player-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position:absolute;
+    right: 50px;
+    top: 60px;
+   
+}
+.launcher-content .player-box .head-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    height: 100px;
+    width: 100px;
+    background: rgba(0,0,0,0.5);
+    border: 2px solid white;
+
+}
+.launcher-content img {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
+.launcher-content .player-box > p {
+    color: white;
+}
+.launcher-content .play-box {
+    display: flex;
+    justify-content: center;
+    
+    align-items: center;
+    background: rgba(0,0,0,0.3);
+    height: 100px;
+    width: 500px;
+    border-radius: 30px;
+    margin-top: 100px;
+    margin-bottom: 150px;
+}
+.launcher-content .play-box .play-button, .launcher-content .play-box .settings-button {
+    color: white;
+    background: transparent;
+    outline: none;
+    border:none;
+  
+    border-radius: 10px;
+    font-size: 30px;
+}
+.launcher-content .play-box .play-button{
+    margin-left: 120px;
+    padding: 10px 20px;
+}
+.launcher-content .play-box .play-button:hover,.launcher-content .play-box .settings-button:hover {
+    background: rgba(0,0,0,0.4);
+    cursor: pointer;
+}
+.launcher-content .play-box .play-button:hover {
+    text-decoration: underline 2px;
+}
+.launcher-content .play-box .settings-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 100px;
+    padding: 5px;
+
+ }

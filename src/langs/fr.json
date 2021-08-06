@@ -33,9 +33,13 @@
       }
     },
     "authentication": "Authentification",
+    "logging-in": "Connexion",
     "login": "Connexion",
     "email": "E-mail",
     "password": "Mot de passe",
     "remember-me": "Se souvenir de moi"
+  },
+  "launcher": {
+    "play": "Jouer"
   }
 }

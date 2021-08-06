@@ -44,7 +44,6 @@ const DEFAULT_CONFIG = {
             ],
         },
         game: {
-            autoConnect: true,
             launchDetached: true
         },
         launcher: {
@@ -52,6 +51,7 @@ const DEFAULT_CONFIG = {
         }
     },
     clientToken: null,
+    autoAuth: true,
     accounts: {},
 }
 const configPath = path.join(exports.getLauncherDirectory(), 'config.json')
@@ -126,7 +126,7 @@ exports.load = function () {
             exports.saveConfig()
         }
     }
-    logger.log('Successfully Loaded')
+    logger.log("Successfully loaded!")
 }
 
 /**
@@ -383,24 +383,7 @@ exports.setJVMOptions = function (jvmOptions) {
     config.settings.java.jvmOptions = jvmOptions
 }
 
-/**
- * Check if the game should auto connect to servers.
- * 
- * @param {boolean} def Optional. If true, the default value will be returned.
- * @returns {boolean} Whether or not the game should auto connect to servers.
- */
-exports.getAutoConnect = function (def = false) {
-    return !def ? config.settings.game.autoConnect : DEFAULT_CONFIG.settings.game.autoConnect
-}
 
-/**
- * Change the status of whether or not the game should auto connect to servers.
- * 
- * @param {boolean} autoConnect Whether or not the game should auto connect to servers.
- */
-exports.setAutoConnect = function (autoConnect) {
-    config.settings.game.autoConnect = autoConnect
-}
 
 /**
  * Check if the game should launch as a detached process.
@@ -419,4 +402,22 @@ exports.getLaunchDetached = function (def = false) {
  */
 exports.setLaunchDetached = function (launchDetached) {
     config.settings.game.launchDetached = launchDetached
+}
+
+/**
+ * Check if auto authentication is enabled or not
+ * 
+ * @returns {boolean} Whether or not the launcher automatically authenticates the player.
+ */
+exports.isAutoAuthEnabled = function () {
+    return config.autoAuth
+}
+
+/**
+ * Set auto authentication enabled or not
+ * 
+ * @param {boolean} autoAuth Whether or not the launcher automatically authenticates the player.
+ */
+exports.setAutoAuth = function (autoAuth) {
+    config.autoAuth = autoAuth
 }

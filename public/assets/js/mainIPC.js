@@ -4,9 +4,13 @@ const main = require("../../../main")
 
 exports.initMainIPC = () => {
 
+    //Async utils
+    ipc.on("is-auto-auth", () => main.win.webContents.send("is-auto-auth-response", configManager.isAutoAuthEnabled()))
+
+
     //Sync utils
-    ipc.on("get-launcher-name", (event) => { event.returnValue = configManager.launcherName })
-    ipc.on("get-platform-name", (event) => { event.returnValue = process.platform })
+    ipc.on("get-launcher-name", event => { event.returnValue = configManager.launcherName })
+    ipc.on("get-platform-name", event => { event.returnValue = process.platform })
 
 
     //Async app actions

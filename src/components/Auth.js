@@ -14,9 +14,13 @@ class Auth extends Component {
         rememberMe: true,
         email: "",
         password: "",
+        autoAuth: true
     }
 
     componentDidMount() {
+        window.ipc.send("is-auto-auth")
+
+
         window.ipc.receive("mojang-auth-err", err => {
             this.openErrorBox(this.resolveError(err).desc, this.resolveError(err).title)
         })
@@ -24,6 +28,21 @@ class Auth extends Component {
             this.openErrorBox(err)
         })
         window.ipc.receive("auth-success", () => this.props.history.push("/launcher"))
+
+        window.ipc.receive("is-auto-auth-response", autoAuth => {
+            this.setState({ autoAuth: autoAuth })
+            window.ipc.send("auto-auth")
+        })
+        window.ipc.receive("auto-auth-response", res => {
+            if (res) {
+                this.props.history.push("/launcher")
+            }
+            else {
+                this.setState({ autoAuth: false })
+            }
+        })
+
+
 
     }
 
@@ -152,52 +171,57 @@ class Auth extends Component {
 
     render() {
         const { t } = this.props
-        const { showPassword, currentAuthType, isAuthenticating, rememberMe, email, password } = this.state
+        const { showPassword, currentAuthType, isAuthenticating, rememberMe, email, password, autoAuth } = this.state
         return (
             <div className="auth-content">
                 <img src={`${process.env.PUBLIC_URL}/assets/images/logo.png`} alt="logo" />
-                <div className="auth-box">
-                    <h2>{t("auth.authentication")}</h2>
-                    <div className="auth-selector">
-                        <div className="auth-type" style={{ border: `2px solid ${currentAuthType === "mojang" ? "#56B5FC" : "white"}` }} ><img src={`${process.env.PUBLIC_URL}/assets/images/mojang.png`} alt="mojang" width={15} /> Mojang</div>
-                        <div className="auth-type" onClick={this.handleMicrosoftLogin} style={{ border: `2px solid ${currentAuthType === "microsoft" ? "#56B5FC" : "white"}` }}><img src={`${process.env.PUBLIC_URL}/assets/images/microsoft.png`} alt="microsoft" width={15} /> Microsoft</div>
-
-                    </div>
-                    <div className="fields">
-                        <div className="field" >
-                            <i className="fas fa-envelope"></i>
-                            <input disabled={isAuthenticating} type="text" name="username-field" id="username-field" placeholder={t("auth.email")} value={email} onChange={event => this.setState({ email: event.target.value })} />
-                            <span className="underline-animation" ></span>
-
+                {!autoAuth &&
+                    <div className="auth-box">
+                        <h2>{t("auth.authentication")}</h2>
+                        <div className="auth-selector">
+                            <div className="auth-type" style={{ border: `2px solid ${currentAuthType === "mojang" ? "#56B5FC" : "white"}` }} ><img src={`${process.env.PUBLIC_URL}/assets/images/mojang.png`} alt="mojang" width={15} /> Mojang</div>
+                            <div className="auth-type" onClick={this.handleMicrosoftLogin} style={{ border: `2px solid ${currentAuthType === "microsoft" ? "#56B5FC" : "white"}` }}><img src={`${process.env.PUBLIC_URL}/assets/images/microsoft.png`} alt="microsoft" width={15} /> Microsoft</div>
 
                         </div>
-                        <div className="field">
-                            <i className="fas fa-lock-alt"></i>
-                            <input disabled={isAuthenticating} type={`${showPassword ? "text" : "password"}`} name="password-field" id="password-field" placeholder={t("auth.password")} value={password} onChange={event => this.setState({ password: event.target.value })} />
-                            <i className={`fal ${showPassword ? "fa-eye" : "fa-eye-slash"}`} onClick={() => this.setState({ showPassword: !showPassword })}></i>
-                            <span className="underline-animation"></span>
+                        <div className="fields">
+                            <div className="field" >
+                                <i className="fas fa-envelope"></i>
+                                <input disabled={isAuthenticating} type="text" name="username-field" id="username-field" placeholder={t("auth.email")} value={email} onChange={event => this.setState({ email: event.target.value })} />
+                                <span className="underline-animation" ></span>
 
+
+                            </div>
+                            <div className="field">
+                                <i className="fas fa-lock-alt"></i>
+                                <input disabled={isAuthenticating} type={`${showPassword ? "text" : "password"}`} name="password-field" id="password-field" placeholder={t("auth.password")} value={password} onChange={event => this.setState({ password: event.target.value })} />
+                                <i className={`fal ${showPassword ? "fa-eye" : "fa-eye-slash"}`} onClick={() => this.setState({ showPassword: !showPassword })}></i>
+                                <span className="underline-animation"></span>
+
+                            </div>
                         </div>
-                    </div>
 
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={rememberMe}
-                                onChange={() => this.setState({ rememberMe: !rememberMe })}
-                                name="remember-me"
-                                style={{
-                                    color: "#56B5FC",
-                                }}
-                            />
-                        }
-                        label={t("auth.remember-me")}
-                        className="remember-me-label"
-                    />
-                    <Button variant="contained" className="login-button" onClick={this.handleLogin} disabled={isAuthenticating}>
-                        {isAuthenticating ? <CircularProgress color="primary" size={25} /> : t("auth.login")}
-                    </Button>
-                </div>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={rememberMe}
+                                    onChange={() => this.setState({ rememberMe: !rememberMe })}
+                                    name="remember-me"
+                                    style={{
+                                        color: "#56B5FC",
+                                    }}
+                                />
+                            }
+                            label={t("auth.remember-me")}
+                            className="remember-me-label"
+                        />
+                        <Button variant="contained" className="login-button" onClick={this.handleLogin} disabled={isAuthenticating}>
+                            {isAuthenticating ? <CircularProgress color="primary" size={25} /> : t("auth.login")}
+                        </Button>
+                    </div>
+                }
+                {autoAuth &&
+                    <p className="auto-auth-text">{t("auth.logging-in") + "... "}<CircularProgress color="primary" size={25} /></p>
+                }
             </div>
         )
     }

@@ -62,7 +62,7 @@ app.whenReady().then(() => {
     ConfigManager.load()
     createWindow()
     mainIPC.initMainIPC()
-    login.initAuthIPC()
+    login.init()
 })
 
 app.on("window-all-closed", () => {
