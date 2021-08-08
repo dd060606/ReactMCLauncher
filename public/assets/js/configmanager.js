@@ -2,10 +2,12 @@ const fs = require("fs-extra")
 const os = require("os")
 const path = require("path")
 const { app } = require("electron")
-exports.launcherName = "ReactMCLauncher"
+const axios = require("axios")
+
+const main = require("../../../main")
 
 const sysRoot = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "/Library/Application Support" : process.env.HOME)
-const dataPath = path.join(sysRoot, exports.launcherName)
+const dataPath = path.join(sysRoot, "ReactMCLauncher")
 
 const launcherDir = process.env.CONFIG_DIRECT_PATH || app.getPath("userData")
 
@@ -59,6 +61,19 @@ const configPathLEGACY = path.join(dataPath, 'config.json')
 
 let config = null
 
+let dynamicConfig = null
+
+exports.getDynamicConfig = function () {
+    return dynamicConfig
+}
+exports.loadDynamicConfig = function () {
+    axios.get(main.LAUNCHER_CONFIG).then(res => {
+        dynamicConfig = res.data
+    })
+        .catch(err => {
+            logger.error(err)
+        })
+}
 
 // Persistance Utility Functions
 

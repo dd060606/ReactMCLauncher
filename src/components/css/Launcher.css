@@ -1,10 +1,10 @@
 .launcher-content {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-direction: column;
     font-family: "Open Sans", sans-serif;
-    height: 90%;
+    height: 95%;
 }
 .launcher-content img {
     user-select: none;
@@ -12,6 +12,7 @@
     -webkit-user-drag: none;
 }
 .launcher-content > img {
+    margin-top: 50px;
     width: 100px;
 
 }
@@ -44,6 +45,12 @@
 .launcher-content .player-box > p {
     color: white;
 }
+.launcher-content .play-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 .launcher-content .play-box {
     display: flex;
     justify-content: center;
@@ -53,15 +60,15 @@
     height: 100px;
     width: 500px;
     border-radius: 30px;
-    margin-top: 100px;
-    margin-bottom: 150px;
+
 }
 .launcher-content .play-box .play-button, .launcher-content .play-box .settings-button {
     color: white;
     background: transparent;
     outline: none;
     border:none;
-  
+    transition: background 0.3s;
+
     border-radius: 10px;
     font-size: 30px;
 }
@@ -71,6 +78,7 @@
 }
 .launcher-content .play-box .play-button:hover,.launcher-content .play-box .settings-button:hover {
     background: rgba(0,0,0,0.4);
+    transition: background 0.3s;
     cursor: pointer;
 }
 .launcher-content .play-box .play-button:hover {
@@ -84,3 +92,42 @@
     padding: 5px;
 
  }
+.launcher-content .external-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.launcher-content .external-link {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.launcher-content .external-link:hover {
+    cursor: pointer;
+}
+.launcher-content .external-link-img {
+    width: 35px;
+}
+.launcher-content .server-infos {
+    display: flex;
+    margin-bottom: -15px;
+    justify-content: space-between;
+    width: 80%;
+    color: white;
+}
+.launcher-content .server-infos .server-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.launcher-content .server-infos .players span {
+    color: aqua;
+}
+
+.launcher-content .server-infos .server-status-indicator{
+    width: 10px;
+    height: 10px;
+    margin-top: 2px;
+    border-radius: 50px;
+    margin-left: 5px;
+}

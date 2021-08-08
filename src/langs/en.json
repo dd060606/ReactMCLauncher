@@ -40,6 +40,8 @@
     "remember-me": "Remember Me"
   },
   "launcher": {
-    "play": "Play"
+    "play": "Play",
+    "server-status": "Server status",
+    "players": "Players"
   }
 }

@@ -10,6 +10,7 @@ const login = require("./public/assets/js/login")
 
 
 
+
 let win
 
 
@@ -23,7 +24,7 @@ function createWindow() {
             contextIsolation: true,
             preload: path.join(__dirname, "preload.js")
         },
-        title: ConfigManager.launcherName,
+        title: exports.LAUNCHER_NAME,
         icon: path.join(__dirname, "public", "assets", "images", "logo.png")
     })
 
@@ -60,6 +61,8 @@ function createWindow() {
 app.whenReady().then(() => {
     // Load ConfigManager
     ConfigManager.load()
+    ConfigManager.loadDynamicConfig()
+    setInterval(function () { ConfigManager.loadDynamicConfig() }, 30000)
     createWindow()
     mainIPC.initMainIPC()
     login.init()
@@ -77,3 +80,8 @@ app.on("activate", () => {
     }
 })
 
+
+exports.SERVER_IP = "mc.hypixel.net"
+exports.SERVER_PORT = "25565"
+exports.LAUNCHER_CONFIG = "https://dd06-dev.fr/dl/studycorp/launchers/launcher_config.json"
+exports.LAUNCHER_NAME = "ReactMCLauncher"
