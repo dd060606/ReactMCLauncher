@@ -19,6 +19,7 @@
     "electron-localshortcut": "^3.2.1",
     "fs-extra": "^9.1.0",
     "i18next": "^20.2.2",
+    "minecraft-launcher-core": "^3.16.6",
     "minecraft-server-ping": "^0.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -27,7 +28,9 @@
     "react-scripts": "4.0.3",
     "request": "^2.88.2",
     "sweetalert2": "^11.0.20",
-    "web-vitals": "^1.1.2"
+    "tar-fs": "^2.1.1",
+    "web-vitals": "^1.1.2",
+    "winreg": "^1.2.4"
   },
   "scripts": {
     "electron": "wait-on tcp:3000 && electron .",

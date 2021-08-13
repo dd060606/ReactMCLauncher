@@ -73,7 +73,7 @@ class Launcher extends Component {
 
                     </div>
                     <div className="play-box">
-                        <button className="play-button">{t("launcher.play")}</button>
+                        <button className="play-button" onClick={() => window.ipc.send("play")}>{t("launcher.play")}</button>
                         <button className="settings-button" onClick={() => this.props.history.push("/settings")}><i className="fas fa-cog"></i></button>
                     </div>
                 </div>

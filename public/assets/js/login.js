@@ -14,12 +14,13 @@ exports.init = () => {
     ipc.on("mojang-login", (event, args) => mojangLogin(args.username, args.password, args.rememberMe))
     ipc.on("microsoft-login", () => AuthManager.addMicrosoftAccount())
     ipc.on("auto-auth", async () => {
+
         const selectedAcc = ConfigManager.getSelectedAccount()
         if (selectedAcc != null) {
             const val = await AuthManager.validateSelected()
             if (!val) {
                 ConfigManager.removeAuthAccount(selectedAcc.uuid)
-                ConfigManager.save()
+                ConfigManager.saveConfig()
                 loggerLogin.error("Failed to refresh login!")
                 main.win.webContents.send("auto-auth-response", false)
             } else {
@@ -27,14 +28,20 @@ exports.init = () => {
                 main.win.webContents.send("auto-auth-response", true)
             }
         } else {
-            loggerLogin.log("Sucessfully authenticated!")
-            main.win.webContents.send("auto-auth-response", true)
+            loggerLogin.error("Failed to refresh login!")
+            main.win.webContents.send("auto-auth-response", false)
 
         }
     })
+    ipc.on("is-auto-auth", () => main.win.webContents.send("is-auto-auth-response", ConfigManager.isAutoAuthEnabled()))
 
-    ipc.on("get-player-name", event => { event.returnValue = ConfigManager.getSelectedAccount().displayName })
-    ipc.on("get-player-uuid", event => { event.returnValue = ConfigManager.getSelectedAccount().uuid })
+
+    ipc.on("get-player-name", event => {
+        event.returnValue = ConfigManager.getSelectedAccount().displayName
+    })
+    ipc.on("get-player-uuid", event => {
+        event.returnValue = ConfigManager.getSelectedAccount().uuid
+    })
 
 
 

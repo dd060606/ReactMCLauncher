@@ -4,7 +4,7 @@
 
 Custom launcher for modded minecraft written in Electron with React.
 
-This launcher is based on [Helios Launcher][helioslauncher]
+This launcher is based on [Helios Launcher][helioslauncher] and uses [MCLC][mclc]
 
 ## Features
 
@@ -67,3 +67,4 @@ We reserve the right to update these conditions at any time, please check back p
 
 [nodejs]: https://nodejs.org/en/ "Node.js"
 [helioslauncher]: https://github.com/dscalzi/HeliosLauncher "Helios Launcher"
+[mclc]: https://github.com/Pierce01/MinecraftLauncher-core "MCLC"

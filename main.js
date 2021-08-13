@@ -7,6 +7,7 @@ const electronLocalshortcut = require("electron-localshortcut")
 const mainIPC = require("./public/assets/js/mainIPC")
 const ConfigManager = require('./public/assets/js/configmanager')
 const login = require("./public/assets/js/login")
+const game = require("./public/assets/js/game")
 
 
 
@@ -62,10 +63,11 @@ app.whenReady().then(() => {
     // Load ConfigManager
     ConfigManager.load()
     ConfigManager.loadDynamicConfig()
-    setInterval(function () { ConfigManager.loadDynamicConfig() }, 30000)
+    setInterval(function () { ConfigManager.loadDynamicConfig() }, 15000)
     createWindow()
     mainIPC.initMainIPC()
     login.init()
+    game.init()
 })
 
 app.on("window-all-closed", () => {
@@ -85,3 +87,4 @@ exports.SERVER_IP = "mc.hypixel.net"
 exports.SERVER_PORT = "25565"
 exports.LAUNCHER_CONFIG = "https://dd06-dev.fr/dl/studycorp/launchers/launcher_config.json"
 exports.LAUNCHER_NAME = "ReactMCLauncher"
+exports.MC_VERSION = "1.12.2"

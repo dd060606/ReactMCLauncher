@@ -8,7 +8,6 @@ const { ping } = require("minecraft-server-ping")
 exports.initMainIPC = () => {
 
     //Async utils
-    ipc.on("is-auto-auth", () => main.win.webContents.send("is-auto-auth-response", configManager.isAutoAuthEnabled()))
     ipc.on("open-link", (event, args) => shell.openExternal(args))
     ipc.on("ping-server", () => {
 

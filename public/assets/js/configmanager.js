@@ -8,6 +8,8 @@ const main = require("../../../main")
 
 const sysRoot = process.env.APPDATA || (process.platform == "darwin" ? process.env.HOME + "/Library/Application Support" : process.env.HOME)
 const dataPath = path.join(sysRoot, "ReactMCLauncher")
+const gamePath = path.join(sysRoot, ".ReactMCLauncher")
+
 
 const launcherDir = process.env.CONFIG_DIRECT_PATH || app.getPath("userData")
 
@@ -24,6 +26,15 @@ exports.getLauncherDirectory = function () {
     return launcherDir
 }
 /**
+ * Retrieve the absolute path of the game directory.
+ * 
+ * @returns {string} The absolute path of the game directory.
+ */
+exports.getGameDirectory = function () {
+    return gamePath
+}
+
+/**
  * Retrieve the absolute path of the launcher directory.
  * 
  * @returns {string} The absolute path of the launcher directory.
@@ -33,20 +44,10 @@ exports.getDataDirectory = function (def = false) {
 }
 
 const DEFAULT_CONFIG = {
-    config: {
+    settings: {
         java: {
             minRAM: resolveMinRAM(),
             maxRAM: resolveMaxRAM(),
-            executable: null,
-            jvmOptions: [
-                '-XX:+UseConcMarkSweepGC',
-                '-XX:+CMSIncrementalMode',
-                '-XX:-UseAdaptiveSizePolicy',
-                '-Xmn128M'
-            ],
-        },
-        game: {
-            launchDetached: true
         },
         launcher: {
             dataDirectory: dataPath
@@ -354,70 +355,8 @@ exports.setMaxRAM = function (maxRAM) {
     config.settings.java.maxRAM = maxRAM
 }
 
-/**
- * Retrieve the path of the Java Executable.
- * 
- * This is a resolved configuration value and defaults to null until externally assigned.
- * 
- * @returns {string} The path of the Java Executable.
- */
-exports.getJavaExecutable = function () {
-    return config.settings.java.executable
-}
-
-/**
- * Set the path of the Java Executable.
- * 
- * @param {string} executable The new path of the Java Executable.
- */
-exports.setJavaExecutable = function (executable) {
-    config.settings.java.executable = executable
-}
-
-/**
- * Retrieve the additional arguments for JVM initialization. Required arguments,
- * such as memory allocation, will be dynamically resolved and will not be included
- * in this value.
- * 
- * @param {boolean} def Optional. If true, the default value will be returned.
- * @returns {Array.<string>} An array of the additional arguments for JVM initialization.
- */
-exports.getJVMOptions = function (def = false) {
-    return !def ? config.settings.java.jvmOptions : DEFAULT_CONFIG.settings.java.jvmOptions
-}
-
-/**
- * Set the additional arguments for JVM initialization. Required arguments,
- * such as memory allocation, will be dynamically resolved and should not be
- * included in this value.
- * 
- * @param {Array.<string>} jvmOptions An array of the new additional arguments for JVM 
- * initialization.
- */
-exports.setJVMOptions = function (jvmOptions) {
-    config.settings.java.jvmOptions = jvmOptions
-}
 
 
-
-/**
- * Check if the game should launch as a detached process.
- * 
- * @param {boolean} def Optional. If true, the default value will be returned.
- * @returns {boolean} Whether or not the game will launch as a detached process.
- */
-exports.getLaunchDetached = function (def = false) {
-    return !def ? config.settings.game.launchDetached : DEFAULT_CONFIG.settings.game.launchDetached
-}
-
-/**
- * Change the status of whether or not the game should launch as a detached process.
- * 
- * @param {boolean} launchDetached Whether or not the game should launch as a detached process.
- */
-exports.setLaunchDetached = function (launchDetached) {
-    config.settings.game.launchDetached = launchDetached
-}
 
 /**
  * Check if auto authentication is enabled or not
@@ -436,3 +375,4 @@ exports.isAutoAuthEnabled = function () {
 exports.setAutoAuth = function (autoAuth) {
     config.autoAuth = autoAuth
 }
+
