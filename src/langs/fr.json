@@ -1,7 +1,7 @@
 {
+  "error": "Erreur",
   "auth": {
     "errors": {
-      "error": "Erreur",
       "wrong-username": "Identifiant invalide !",
       "complete-all-fields": "Merci de remplir tous les champs !",
       "userMigrated": {
@@ -46,10 +46,15 @@
   },
   "update": {
     "errors": {
-      "java-download-error": "Erreur lors du téléchargement de Java"
+      "java-download-error": "Erreur lors du téléchargement de Java",
+      "forge-error": "Erreur lors de l'installation de Forge"
     },
     "searching-updates": "Recherche de mises à jours",
     "downloading-java": "Téléchargement de Java",
+    "downloading-forge": "Téléchargement de Forge",
+    "downloading-assets": "Téléchargement des assets",
+    "downloading-natives": "Téléchargement des natives",
+    "downloading-libraries": "Téléchargement des libraries",
     "analyzing-java": "Analyse de Java",
     "extracting-java": "Extraction de Java",
     "launching-game": "Lancement du jeu"

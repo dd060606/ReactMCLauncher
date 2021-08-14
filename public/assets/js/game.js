@@ -46,44 +46,67 @@ function play() {
     })
 
 }
-function updateAndLaunch(jre = null) {
-    const launcher = new Client()
-    const opts = {
-        clientPackage: null,
+async function updateAndLaunch(jre = null) {
+    downloadForgeInstaller().then(() => {
+        const launcher = new Client()
+        const opts = {
+            clientPackage: null,
 
-        authorization: {
-            access_token: ConfigManager.getSelectedAccount().accessToken,
-            client_token: ConfigManager.getClientToken(),
-            uuid: ConfigManager.getSelectedAccount().uuid,
-            name: ConfigManager.getSelectedAccount().displayName
-        },
-        root: ConfigManager.getGameDirectory(),
-        version: {
-            number: main.MC_VERSION,
-            type: "release"
-        },
-        memory: {
-            max: ConfigManager.getMaxRAM(),
-            min: ConfigManager.getMinRAM()
-        },
-        javaPath: jre ? path.join(jre, "bin", process.platform === "win32" ? "java.exe" : "java") : null,
-        forge: main.FORGE_VERSION ? path.join(ConfigManager.getGameDirectory(), `forge-${main.MC_VERSION}-${main.FORGE_VERSION}-installer.jar`) : null
-    }
+            authorization: {
+                access_token: ConfigManager.getSelectedAccount().accessToken,
+                client_token: ConfigManager.getClientToken(),
+                uuid: ConfigManager.getSelectedAccount().uuid,
+                name: ConfigManager.getSelectedAccount().displayName
+            },
+            root: ConfigManager.getGameDirectory(),
+            version: {
+                number: main.MC_VERSION,
+                type: "release"
+            },
+            memory: {
+                max: ConfigManager.getMaxRAM(),
+                min: ConfigManager.getMinRAM()
+            },
+            javaPath: jre ? path.join(jre, "bin", process.platform === "win32" ? "java.exe" : "java") : null,
+            forge: main.FORGE_VERSION ? path.join(ConfigManager.getGameDirectory(), `forge-${main.MC_VERSION}-${main.FORGE_VERSION}-installer.jar`) : null
+        }
 
-    launcher.launch(opts)
+        launcher.launch(opts)
+        launcher.on("debug", (e) => console.log(e))
+        launcher.on("data", (e) => console.log(e))
+        launcher.on("progress", (progress) => {
+            switch (progress.type) {
+                case "assets":
+                    setUpdateText("DownloadingAssets")
+                    setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
+                    break
+                case "natives":
+                    setUpdateText("DownloadingNatives")
+                    setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
+                    break
 
-    launcher.on("debug", (e) => console.log(e))
-    launcher.on("data", (e) => console.log(e))
-    launcher.on("progress", (progress) => {
-        console.log("Progress : " + JSON.stringify(progress))
+                default:
+                    if (progress.type.includes("classes")) {
+                        setUpdateText("DownloadingLibraries")
+                        setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
+                    }
+                    else if (progress.type.includes("assets")) {
+                        setUpdateText("DownloadingLibraries")
+                        setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
+                    }
+                    break
+            }
+        })
+        launcher.on("arguments", () => {
+            setUpdateProgress(0)
+            setUpdateText("LaunchingGame")
+            setTimeout(() => {
+                main.win.close()
+            }, 10000)
+        })
     })
-    launcher.on("arguments", () => {
-        setUpdateProgress(0)
-        setUpdateText("LaunchingGame")
-        setTimeout(() => {
-            main.win.close()
-        }, 10000)
-    })
+
+
 }
 function checkJavaInstallation() {
     return new Promise((resolve, reject) => {
@@ -129,7 +152,6 @@ function checkJavaInstallation() {
                         javaLogger.log("No java installation found!")
                         return reject()
                     }
-
                 }
             }
             else {
@@ -148,6 +170,9 @@ function checkJavaInstallation() {
 
 async function downloadJava(file_url, targetPath, jre_path) {
     try {
+        gameLogger.log("Downloading Java...")
+        setUpdateText("DownloadingJava")
+
         const { data, headers } = await Axios({
             url: file_url,
             method: 'GET',
@@ -155,47 +180,109 @@ async function downloadJava(file_url, targetPath, jre_path) {
         })
         const totalLength = headers['content-length']
         let receivedBytes = 0
-
-
         const writer = fs.createWriteStream(targetPath)
-
         data.on('data', (chunk) => {
             receivedBytes += chunk.length
             setUpdateText("DownloadingJava")
+
             setUpdateProgress((100.0 * receivedBytes / totalLength).toFixed(0))
         })
         data.pipe(writer)
         writer.on('error', err => {
             javaLogger.error(err.message)
-            main.win.webContents.send("java-download-error", err.message)
+            main.win.webContents.send("update-error", "JavaError", err.message)
         })
-        data.on('end', function () {
-            javaLogger.log("Java installation successfully downloaded!")
-            let zip = new AdmZip(targetPath)
-            javaLogger.log("Extracting java!")
-            setUpdateText("ExtractingJava")
-            zip.extractAllTo(jre_path, true)
-            javaLogger.log("Java was successfully extracted!")
-            fs.unlink(targetPath, (err) => {
-                if (err) {
-                    javaLogger.error(err.message)
-                    return
-                }
-                javaLogger.log("Java installation file was successfully removed!")
-            })
-            updateAndLaunch(jre_path)
-        })
+        data.on('end', async function () {
+            let res = await Axios.head(file_url)
+            if (fs.statSync(targetPath).size === parseInt(res.headers["content-length"])) {
+                javaLogger.log("Java installation successfully downloaded!")
+                let zip = new AdmZip(targetPath)
+                javaLogger.log("Extracting java!")
+                setUpdateText("ExtractingJava")
+                zip.extractAllTo(jre_path, true)
+                javaLogger.log("Java was successfully extracted!")
+                fs.unlink(targetPath, (err) => {
+                    if (err) {
+                        javaLogger.error(err.message)
+                        return
+                    }
+                    javaLogger.log("Java installation file was successfully removed!")
+                })
+                updateAndLaunch(jre_path)
+            }
+            else {
+                javaLogger.error("Error while downloading java!")
+                main.win.webContents.send("update-error", "JavaError", "")
+            }
 
+        })
     } catch (err) {
         javaLogger.error(err.message)
-        main.win.webContents.send("java-download-error", err.message)
+        main.win.webContents.send("update-error", "JavaError", err.message)
 
     }
-
 }
 
+function downloadForgeInstaller() {
+    return new Promise(async (resolve, reject) => {
 
+        try {
 
+            if (!main.FORGE_VERSION) {
+                resolve()
+            }
+            setUpdateText("DownloadingForge")
+            gameLogger.log("Downloading Forge...")
+            const forgeInstallerFile = path.join(ConfigManager.getGameDirectory(), `forge-${main.MC_VERSION}-${main.FORGE_VERSION}-installer.jar`)
+            const forgeInstallerURL = `https://maven.minecraftforge.net/net/minecraftforge/forge/${main.MC_VERSION}-${main.FORGE_VERSION}/forge-${main.MC_VERSION}-${main.FORGE_VERSION}-installer.jar`
 
+            let res = await Axios.head(forgeInstallerURL)
+            if (!fs.existsSync(forgeInstallerFile) || fs.statSync(forgeInstallerFile).size !== parseInt(res.headers["content-length"])) {
+                const { data, headers } = await Axios({
+                    url: forgeInstallerURL,
+                    method: 'GET',
+                    responseType: 'stream'
+                })
+                const totalLength = headers['content-length']
+                let receivedBytes = 0
+                const writer = fs.createWriteStream(forgeInstallerFile)
+                data.on('data', (chunk) => {
+                    receivedBytes += chunk.length
+                    setUpdateText("DownloadingForge")
 
+                    setUpdateProgress((100.0 * receivedBytes / totalLength).toFixed(0))
+                })
+                data.pipe(writer)
+                writer.on('error', err => {
+                    gameLogger.error(err.message)
+                    main.win.webContents.send("update-error", "ForgeError", err.message)
+                    reject()
+                })
+
+                data.on('end', function () {
+                    if (fs.statSync(forgeInstallerFile).size == totalLength) {
+                        gameLogger.log("Forge was successfully downloaded!")
+                        resolve()
+                    }
+                    else {
+                        reject()
+
+                    }
+                })
+
+            }
+            else {
+                gameLogger.log("Forge installer is already installed")
+                resolve()
+            }
+
+        } catch (err) {
+            gameLogger.error(err.message)
+            main.win.webContents.send("update-error", "ForgeError", err.message)
+            reject()
+
+        }
+    })
+
+}
 

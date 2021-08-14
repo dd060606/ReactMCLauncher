@@ -30,23 +30,43 @@ class Updater extends Component {
                 case "LaunchingGame":
                     this.setState({ updateText: t("update.launching-game") + "..." })
                     break
+                case "DownloadingForge":
+                    this.setState({ updateText: t("update.downloading-forge") + "... (" + progress + "%)" })
+                    break
+                case "DownloadingAssets":
+                    this.setState({ updateText: t("update.downloading-assets") + "... (" + progress + "%)" })
+                    break
+                case "DownloadingNatives":
+                    this.setState({ updateText: t("update.downloading-natives") + "... (" + progress + "%)" })
+                    break
+                case "DownloadingLibraries":
+                    this.setState({ updateText: t("update.downloading-libraries") + "... (" + progress + "%)" })
+                    break
                 default:
                     this.setState({ updateText: t("update.searching-updates") + "..." })
                     break
             }
 
         })
-        window.ipc.receive("set-update-progress", (progress) => {
+        window.ipc.receive("set-update-progress", (progress) => this.setState({ progress: progress }))
+        window.ipc.receive("update-error", (errorType, errorMessage) => {
+            switch (errorType) {
+                case "JavaError":
+                    this.openErrorBox(errorMessage, t("update.errors.java-download-error"))
+                    break
+                case "ForgeError":
+                    this.openErrorBox(errorMessage, t("update.errors.forge-error"))
+                    break
+                default:
+                    this.setState(errorMessage)
+                    break
+            }
 
-            this.setState({ progress: progress })
-        })
-        window.ipc.receive("java-download-error", (message) => {
-            this.openErrorBox(message, t("update.errors.java-download-error"))
         })
     }
     openErrorBox(message, title = "") {
         const { t } = this.props
-        title = !title ? t("auth.errors.error") : title
+        title = !title ? t("error") : title
         Swal.fire({
             title: title,
             html: `<p style="color: white;">${message}</p>`,

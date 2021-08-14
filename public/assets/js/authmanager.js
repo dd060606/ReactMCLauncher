@@ -14,7 +14,6 @@ const fetch = require("node-fetch")
 const ConfigManager = require('./configmanager')
 const LoggerUtil = require('./logger')
 const Mojang = require('./auth/mojang')
-const Microsoft = require("./auth/microsoft")
 const logger = LoggerUtil('%c[AuthManager]', 'color: #a02d2a; font-weight: bold')
 const { BrowserWindow } = require("electron")
 const main = require("../../../main")
@@ -86,43 +85,7 @@ exports.addMicrosoftAccount = async function () {
             main.win.webContents.send("microsoft-auth-err", reason)
 
         })
-    /*
-    let authWin = new BrowserWindow({
-        width: 460,
-        height: 580,
-        modal: true,
-        parent: main.win,
-        resizable: false,
-    })
 
-    authWin.removeMenu()
-    authWin.on("closed", () => { authWin = null })
-    authWin.loadURL(`${Microsoft.MICROSOFT_OAUTH2_URL}?client_id=${Microsoft.MICROSOFT_CLIENT_ID}&response_type=code&scope=service%3A%3Auser.auth.xboxlive.com%3A%3AMBI_SSL&redirect_uri=https%3A%2F%2Flogin.live.com%2Foauth20_desktop.srf`)
-    authWin.removeMenu()
-    authWin.webContents.on("did-navigate", (event, url) => {
-
-        if (url.startsWith(Microsoft.MICROSOFT_OAUTH2_DESKTOP + "?code=")) {
-            const authCode = url.substring(url.indexOf("=") + 1, url.indexOf("&"))
-            authWin.hide()
-            Microsoft.authenticate(authCode).then(session => setTimeout(() => {
-                const ret = ConfigManager.addAuthAccount(session.id, session.accessToken, session.username, "microsoft")
-                ConfigManager.saveConfig()
-                main.win.webContents.send("auth-success")
-                authWin.close()
-
-            }, 1000)).catch(err => {
-                main.win.webContents.send("microsoft-auth-err", err.message);
-                require("./logger")("%c[Login]", "color: #000668; font-weight: bold").error("Error while logging in.", err)
-                authWin.close()
-            })
-
-
-        }
-
-    })
-
-
-    */
 }
 
 

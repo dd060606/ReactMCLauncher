@@ -1,7 +1,7 @@
 {
+  "error": "Error",
   "auth": {
     "errors": {
-      "error": "Error",
       "wrong-username": "Wrong username",
       "complete-all-fields": "Please complete all fields!",
       "userMigrated": {
@@ -46,10 +46,15 @@
   },
   "update": {
     "errors": {
-      "java-download-error": "Error while downloading Java"
+      "java-download-error": "Error while downloading Java",
+      "forge-error": "Error while installing Forge"
     },
     "searching-updates": "Searching updates",
     "downloading-java": "Downloading Java",
+    "downloading-forge": "Downloading Forge",
+    "downloading-assets": "Downloading assets",
+    "downloading-natives": "Downloading natives",
+    "downloading-libraries": "Downloading libraries",
     "analyzing-java": "Analyzing Java Installation",
     "extracting-java": "Extracting Java",
     "launching-game": "Launching game"

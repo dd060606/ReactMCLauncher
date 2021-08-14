@@ -122,7 +122,7 @@ class Auth extends Component {
 
     openErrorBox(message, title = "") {
         const { t } = this.props
-        title = !title ? t("auth.errors.error") : title
+        title = !title ? t("error") : title
         Swal.fire({
             title: title,
             html: `<p style="color: white;">${message}</p>`,
