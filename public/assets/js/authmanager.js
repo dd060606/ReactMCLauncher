@@ -1,3 +1,5 @@
+const msmc = require("msmc")
+const fetch = require("node-fetch")
 /**
  * AuthManager
  * 
@@ -57,7 +59,34 @@ exports.addAccount = async function (username, password, autoAuth) {
  * @returns {Promise.<Object>} Promise which resolves the resolved authenticated account object.
  */
 exports.addMicrosoftAccount = async function () {
+    msmc.setFetch(fetch)
 
+    msmc.fastLaunch("raw",
+        (update) => {
+            //A hook for catching loading bar events and errors, standard with MSMC
+            if (update.data) {
+                logger.log(update.data)
+            }
+        }).then(result => {
+            //Let's check if we logged in?
+            if (msmc.errorCheck(result)) {
+                main.win.webContents.send("microsoft-auth-err", result.reason)
+                logger.error(result.reason)
+                return
+            }
+            //If the login works
+            logger.log("Successfully authenticated to microsoft!")
+            const session = msmc.getMCLC().getAuth(result)
+            ConfigManager.addAuthAccount(session.uuid, session.access_token, "", session.name, "microsoft")
+            ConfigManager.saveConfig()
+            main.win.webContents.send("auth-success")
+        }).catch(reason => {
+            //If the login fails
+            logger.error("Error while logging in : " + reason)
+            main.win.webContents.send("microsoft-auth-err", reason)
+
+        })
+    /*
     let authWin = new BrowserWindow({
         width: 460,
         height: 580,
@@ -93,6 +122,7 @@ exports.addMicrosoftAccount = async function () {
     })
 
 
+    */
 }
 
 

@@ -53,6 +53,12 @@ class Launcher extends Component {
 
     }
 
+    //Arrow fx for binding
+    handlePlay = () => {
+        window.ipc.send("play")
+        this.props.history.push("/updater")
+    }
+
     render() {
         const { t } = this.props
         const { playerUuid, playerName, playersCount, serverStatus } = this.state
@@ -73,7 +79,7 @@ class Launcher extends Component {
 
                     </div>
                     <div className="play-box">
-                        <button className="play-button" onClick={() => window.ipc.send("play")}>{t("launcher.play")}</button>
+                        <button className="play-button" onClick={this.handlePlay}>{t("launcher.play")}</button>
                         <button className="settings-button" onClick={() => this.props.history.push("/settings")}><i className="fas fa-cog"></i></button>
                     </div>
                 </div>

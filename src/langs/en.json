@@ -43,5 +43,15 @@
     "play": "Play",
     "server-status": "Server status",
     "players": "Players"
+  },
+  "update": {
+    "errors": {
+      "java-download-error": "Error while downloading Java"
+    },
+    "searching-updates": "Searching updates",
+    "downloading-java": "Downloading Java",
+    "analyzing-java": "Analyzing Java Installation",
+    "extracting-java": "Extracting Java",
+    "launching-game": "Launching game"
   }
 }
