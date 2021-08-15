@@ -47,7 +47,8 @@
   "update": {
     "errors": {
       "java-download-error": "Error while downloading Java",
-      "forge-error": "Error while installing Forge"
+      "forge-error": "Error while installing Forge",
+      "mods-error": "Error while downloading mods"
     },
     "searching-updates": "Searching updates",
     "downloading-java": "Downloading Java",
@@ -55,6 +56,8 @@
     "downloading-assets": "Downloading assets",
     "downloading-natives": "Downloading natives",
     "downloading-libraries": "Downloading libraries",
+    "downloading-mods": "Downloading mods",
+    "installing-forge": "Installing Forge",
     "analyzing-java": "Analyzing Java Installation",
     "extracting-java": "Extracting Java",
     "launching-game": "Launching game"

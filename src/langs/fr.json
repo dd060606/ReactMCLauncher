@@ -47,7 +47,8 @@
   "update": {
     "errors": {
       "java-download-error": "Erreur lors du téléchargement de Java",
-      "forge-error": "Erreur lors de l'installation de Forge"
+      "forge-error": "Erreur lors de l'installation de Forge",
+      "mods-error": "Erreur lors du téléchargement des mods"
     },
     "searching-updates": "Recherche de mises à jours",
     "downloading-java": "Téléchargement de Java",
@@ -55,6 +56,8 @@
     "downloading-assets": "Téléchargement des assets",
     "downloading-natives": "Téléchargement des natives",
     "downloading-libraries": "Téléchargement des libraries",
+    "downloading-mods": "Téléchargement des mods",
+    "installing-forge": "Installation de Forge",
     "analyzing-java": "Analyse de Java",
     "extracting-java": "Extraction de Java",
     "launching-game": "Lancement du jeu"

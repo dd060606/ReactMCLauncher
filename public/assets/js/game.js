@@ -9,9 +9,11 @@ const path = require("path")
 const fs = require("fs")
 const Axios = require("axios")
 const AdmZip = require("adm-zip")
-
+const crypto = require("crypto")
 
 const ConfigManager = require("./configmanager")
+
+
 
 exports.init = () => {
     ipc.on("play", () => play())
@@ -47,63 +49,70 @@ function play() {
 
 }
 async function updateAndLaunch(jre = null) {
-    downloadForgeInstaller().then(() => {
-        const launcher = new Client()
-        const opts = {
-            clientPackage: null,
+    downloadForge().then(async () => {
+        const modsDownloaded = await downloadMods()
+        if (modsDownloaded) {
+            const launcher = new Client()
+            const opts = {
+                clientPackage: null,
 
-            authorization: {
-                access_token: ConfigManager.getSelectedAccount().accessToken,
-                client_token: ConfigManager.getClientToken(),
-                uuid: ConfigManager.getSelectedAccount().uuid,
-                name: ConfigManager.getSelectedAccount().displayName
-            },
-            root: ConfigManager.getGameDirectory(),
-            version: {
-                number: main.MC_VERSION,
-                type: "release"
-            },
-            memory: {
-                max: ConfigManager.getMaxRAM(),
-                min: ConfigManager.getMinRAM()
-            },
-            javaPath: jre ? path.join(jre, "bin", process.platform === "win32" ? "java.exe" : "java") : null,
-            forge: main.FORGE_VERSION ? path.join(ConfigManager.getGameDirectory(), `forge-${main.MC_VERSION}-${main.FORGE_VERSION}-installer.jar`) : null
+                authorization: {
+                    access_token: ConfigManager.getSelectedAccount().accessToken,
+                    client_token: ConfigManager.getClientToken(),
+                    uuid: ConfigManager.getSelectedAccount().uuid,
+                    name: ConfigManager.getSelectedAccount().displayName
+                },
+                root: ConfigManager.getGameDirectory(),
+                version: {
+                    number: main.MC_VERSION,
+                    type: "release"
+                },
+                memory: {
+                    max: ConfigManager.getMaxRAM(),
+                    min: ConfigManager.getMinRAM()
+                },
+                javaPath: jre ? path.join(jre, "bin", process.platform === "win32" ? "java.exe" : "java") : null,
+                forge: main.FORGE_VERSION ? path.join(ConfigManager.getGameDirectory(), `forge-${main.MC_VERSION}-${main.FORGE_VERSION}-installer.jar`) : null
+            }
+
+            launcher.launch(opts)
+            launcher.on("debug", (e) => {
+                console.log(e)
+            })
+            launcher.on("data", (e) => console.log(e))
+            launcher.on("progress", (progress) => {
+                switch (progress.type) {
+                    case "assets":
+                        setUpdateText("DownloadingAssets")
+                        setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
+                        break
+                    case "natives":
+                        setUpdateText("DownloadingNatives")
+                        setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
+                        break
+
+                    default:
+                        if (progress.type.includes("classes")) {
+                            setUpdateText("InstallingForge")
+                            setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
+                        }
+                        else if (progress.type.includes("assets")) {
+                            setUpdateText("DownloadingAssets")
+                            setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
+                        }
+                        break
+                }
+            })
+            launcher.on("arguments", () => {
+                setUpdateProgress(0)
+                setUpdateText("LaunchingGame")
+                analyseMods()
+                setTimeout(() => {
+                    main.win.close()
+                }, 10000)
+            })
         }
 
-        launcher.launch(opts)
-        launcher.on("debug", (e) => console.log(e))
-        launcher.on("data", (e) => console.log(e))
-        launcher.on("progress", (progress) => {
-            switch (progress.type) {
-                case "assets":
-                    setUpdateText("DownloadingAssets")
-                    setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
-                    break
-                case "natives":
-                    setUpdateText("DownloadingNatives")
-                    setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
-                    break
-
-                default:
-                    if (progress.type.includes("classes")) {
-                        setUpdateText("DownloadingLibraries")
-                        setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
-                    }
-                    else if (progress.type.includes("assets")) {
-                        setUpdateText("DownloadingLibraries")
-                        setUpdateProgress((100.0 * progress.task / progress.total).toFixed(0))
-                    }
-                    break
-            }
-        })
-        launcher.on("arguments", () => {
-            setUpdateProgress(0)
-            setUpdateText("LaunchingGame")
-            setTimeout(() => {
-                main.win.close()
-            }, 10000)
-        })
     })
 
 
@@ -168,13 +177,13 @@ function checkJavaInstallation() {
     })
 }
 
-async function downloadJava(file_url, targetPath, jre_path) {
+async function downloadJava(fileURL, targetPath, jrePath) {
     try {
         gameLogger.log("Downloading Java...")
         setUpdateText("DownloadingJava")
 
         const { data, headers } = await Axios({
-            url: file_url,
+            url: fileURL,
             method: 'GET',
             responseType: 'stream'
         })
@@ -193,13 +202,13 @@ async function downloadJava(file_url, targetPath, jre_path) {
             main.win.webContents.send("update-error", "JavaError", err.message)
         })
         data.on('end', async function () {
-            let res = await Axios.head(file_url)
+            let res = await Axios.head(fileURL)
             if (fs.statSync(targetPath).size === parseInt(res.headers["content-length"])) {
                 javaLogger.log("Java installation successfully downloaded!")
                 let zip = new AdmZip(targetPath)
                 javaLogger.log("Extracting java!")
                 setUpdateText("ExtractingJava")
-                zip.extractAllTo(jre_path, true)
+                zip.extractAllTo(jrePath, true)
                 javaLogger.log("Java was successfully extracted!")
                 fs.unlink(targetPath, (err) => {
                     if (err) {
@@ -223,7 +232,7 @@ async function downloadJava(file_url, targetPath, jre_path) {
     }
 }
 
-function downloadForgeInstaller() {
+function downloadForge() {
     return new Promise(async (resolve, reject) => {
 
         try {
@@ -259,7 +268,7 @@ function downloadForgeInstaller() {
                     reject()
                 })
 
-                data.on('end', function () {
+                data.on('end', async function () {
                     if (fs.statSync(forgeInstallerFile).size == totalLength) {
                         gameLogger.log("Forge was successfully downloaded!")
                         resolve()
@@ -284,5 +293,129 @@ function downloadForgeInstaller() {
         }
     })
 
+}
+
+let totalModsSize = 0
+let currentModsSize = 0
+
+
+async function downloadMods() {
+    if (main.MODS_URL) {
+        try {
+            setUpdateText("DownloadingMods")
+            gameLogger.log("Downloading Mods...")
+            const modsDir = path.join(ConfigManager.getGameDirectory(), "mods")
+            if (!fs.existsSync(modsDir)) {
+                fs.mkdirSync(modsDir)
+            }
+
+            const response = await Axios.get(main.MODS_URL)
+
+            for (let i = 0; i < response.data.mods.length; i++) {
+                const modFile = path.join(modsDir, response.data.mods[i].name)
+                if (fs.existsSync(modFile)) {
+                    const modFileContent = fs.readFileSync(modFile)
+                    let modSha1 = crypto.createHash("sha1").update(modFileContent).digest("hex")
+                    if (modSha1 !== response.data.mods[i].sha1) {
+                        fs.unlinkSync(modFile)
+                        totalModsSize += response.data.mods[i].size
+                    }
+                    else {
+                        continue
+                    }
+                }
+                else {
+                    totalModsSize += response.data.mods[i].size
+                }
+            }
+
+            for (let i = 0; i < response.data.mods.length; i++) {
+                const modFile = path.join(modsDir, response.data.mods[i].name)
+                if (fs.existsSync(modFile)) {
+                    const modFileContent = fs.readFileSync(modFile)
+                    let modSha1 = crypto.createHash("sha1").update(modFileContent).digest("hex")
+                    if (modSha1 !== response.data.mods[i].sha1) {
+                        fs.unlinkSync(modFile)
+                        await downloadMod(response.data.mods[i].downloadURL, modFile, response.data.mods[i].size)
+                        gameLogger.log(`${response.data.mods[i].name} was successfully downloaded!`)
+                    }
+                    else {
+                        continue
+                    }
+                }
+                else {
+                    await downloadMod(response.data.mods[i].downloadURL, modFile, response.data.mods[i].size)
+                    gameLogger.log(`${response.data.mods[i].name} was successfully downloaded!`)
+                }
+            }
+            return true
+        }
+        catch (err) {
+            gameLogger.error(err.message)
+            main.win.webContents.send("update-error", "ModsError", err.message)
+            return false
+        }
+    }
+
+}
+async function analyseMods() {
+    try {
+
+        const modsDir = path.join(ConfigManager.getGameDirectory(), "mods")
+        if (!fs.existsSync(modsDir)) {
+            fs.mkdirSync(modsDir)
+        }
+        const response = await Axios.get(main.MODS_URL)
+        fs.readdirSync(modsDir).forEach(file => {
+            let sha1Array = []
+            for (let i = 0; i < response.data.mods.length; i++) {
+                sha1Array.push(response.data.mods[i].sha1)
+            }
+            const modFileContent = fs.readFileSync(path.join(modsDir, file))
+            let modSha1 = crypto.createHash("sha1").update(modFileContent).digest("hex")
+            if (!sha1Array.includes(modSha1)) {
+                fs.unlinkSync(path.join(modsDir, file))
+            }
+        })
+
+
+    }
+    catch (err) {
+        gameLogger.error(err.message)
+        main.win.webContents.send("update-error", "ModsError", err.message)
+    }
+}
+async function downloadMod(fileURL, targetPath, modSize) {
+
+    return new Promise(async (resolve, reject) => {
+
+        const { data, headers } = await Axios({
+            url: fileURL,
+            method: 'GET',
+            responseType: 'stream'
+        })
+        //const totalLength = headers['content-length']
+        const writer = fs.createWriteStream(targetPath)
+        data.on('data', (chunk) => {
+            currentModsSize += chunk.length
+            setUpdateText("DownloadingMods")
+            setUpdateProgress((100.0 * currentModsSize / totalModsSize).toFixed(1))
+        })
+        data.pipe(writer)
+        writer.on('error', err => {
+            gameLogger.error(err.message)
+            main.win.webContents.send("update-error", "ModsError", err.message)
+            reject()
+        })
+
+        data.on('end', async function () {
+            if (fs.statSync(targetPath).size == modSize) {
+                resolve()
+            }
+            else {
+                reject()
+            }
+        })
+    })
 }
 

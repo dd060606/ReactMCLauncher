@@ -42,6 +42,12 @@ class Updater extends Component {
                 case "DownloadingLibraries":
                     this.setState({ updateText: t("update.downloading-libraries") + "... (" + progress + "%)" })
                     break
+                case "InstallingForge":
+                    this.setState({ updateText: t("update.installing-forge") + "... (" + progress + "%)" })
+                    break
+                case "DownloadingMods":
+                    this.setState({ updateText: t("update.downloading-mods") + "... (" + progress + "%)" })
+                    break
                 default:
                     this.setState({ updateText: t("update.searching-updates") + "..." })
                     break
@@ -56,6 +62,9 @@ class Updater extends Component {
                     break
                 case "ForgeError":
                     this.openErrorBox(errorMessage, t("update.errors.forge-error"))
+                    break
+                case "ModsError":
+                    this.openErrorBox(errorMessage, t("update.errors.mods-error"))
                     break
                 default:
                     this.setState(errorMessage)
