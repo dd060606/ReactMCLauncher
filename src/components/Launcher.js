@@ -2,6 +2,7 @@ import { Component } from "react"
 import { withTranslation } from 'react-i18next'
 import { Tooltip } from "@material-ui/core"
 import "../i18n"
+import Swal from "sweetalert2"
 import "./css/Launcher.css"
 
 class Launcher extends Component {
@@ -55,8 +56,26 @@ class Launcher extends Component {
 
     //Arrow fx for binding
     handlePlay = () => {
-        window.ipc.send("play")
-        this.props.history.push("/updater")
+        const { t } = this.props
+        const config = window.ipc.sendSync("get-dynamic-config")
+        if (!config.maintenance) {
+            window.ipc.send("play")
+            this.props.history.push("/updater")
+        }
+        else {
+            Swal.fire({
+                title: t("launcher.maintenance"),
+                html: `<p style="color: white;">${config.maintenanceMessage}</p>`,
+                icon: "warning",
+                confirmButtonColor: "#54c2f0",
+                background: "#333",
+            })
+        }
+
+    }
+    getNews() {
+        const config = window.ipc.sendSync("get-dynamic-config")
+        return config.news
     }
 
     render() {
@@ -94,6 +113,12 @@ class Launcher extends Component {
                     <Tooltip title="Youtube" placement="top">
                         <div className="external-link" onClick={event => this.handleOpenExternalLink(event)}><img src={`${process.env.PUBLIC_URL}/assets/images/youtube.png`} alt="youtube" className="external-link-img" /></div>
                     </Tooltip>
+
+                </div>
+                <div className="news-box">
+                    <h3>{t("launcher.news")}</h3>
+                    <p>{this.getNews()}</p>
+
 
                 </div>
             </div>)

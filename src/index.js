@@ -6,6 +6,7 @@ import Frame from "./components/Frame"
 import Auth from "./components/Auth"
 import Launcher from "./components/Launcher"
 import Updater from "./components/Updater"
+import Settings from "./components/Settings"
 
 
 
@@ -18,7 +19,7 @@ ReactDOM.render(
           <Route path="/" exact component={Auth} />
           <Route path="/launcher" exact component={Launcher} />
           <Route path="/updater" exact component={Updater} />
-
+          <Route path="/settings" exact component={Settings} />
         </Switch>
       </Router>
     </div>

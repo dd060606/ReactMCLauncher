@@ -108,7 +108,12 @@ async function updateAndLaunch(jre = null) {
                 setUpdateText("LaunchingGame")
                 analyseMods()
                 setTimeout(() => {
-                    main.win.close()
+                    if (!ConfigManager.isKeepLauncherOpenEnabled()) {
+                        main.win.close()
+                    }
+                    else {
+                        main.win.webContents.send("return-to-launcher")
+                    }
                 }, 10000)
             })
         }
@@ -147,7 +152,7 @@ function checkJavaInstallation() {
 
         })
         spawn.stderr.on("data", function (data) {
-            if (data.toString().includes("64")) {
+            if (data.toString().includes("64") && data.toString().includes("1.8")) {
                 data = data.toString().split("\n")[0]
                 var javaVersion = new RegExp('java version').test(data) ? data.split(" ")[2].replace(/"/g, "") : false;
                 if (javaVersion != false) {

@@ -31,7 +31,7 @@ const loggerSuccess = LoggerUtil('%c[AuthManager]', 'color: #209b07; font-weight
  * @param {string} password The account password.
  * @returns {Promise.<Object>} Promise which resolves the resolved authenticated account object.
  */
-exports.addAccount = async function (username, password, autoAuth) {
+exports.addAccount = async function (username, password) {
     try {
         const session = await Mojang.authenticate(username, password, ConfigManager.getClientToken())
         if (session.selectedProfile != null) {
@@ -99,7 +99,9 @@ exports.addMicrosoftAccount = async function () {
 exports.removeAccount = async function (uuid) {
     try {
         const authAcc = ConfigManager.getAuthAccount(uuid)
-        await Mojang.invalidate(authAcc.accessToken, ConfigManager.getClientToken())
+        if (authAcc.authType === "mojang") {
+            await Mojang.invalidate(authAcc.accessToken, ConfigManager.getClientToken())
+        }
         ConfigManager.removeAuthAccount(uuid)
         ConfigManager.saveConfig()
         return Promise.resolve()

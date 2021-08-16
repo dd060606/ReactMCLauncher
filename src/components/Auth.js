@@ -18,7 +18,7 @@ class Auth extends Component {
     }
 
     componentDidMount() {
-        window.ipc.send("is-auto-auth")
+        window.ipc.send("auto-auth")
 
 
         window.ipc.receive("mojang-auth-err", err => {
@@ -29,10 +29,6 @@ class Auth extends Component {
         })
         window.ipc.receive("auth-success", () => this.props.history.push("/launcher"))
 
-        window.ipc.receive("is-auto-auth-response", autoAuth => {
-            this.setState({ autoAuth: autoAuth })
-            window.ipc.send("auto-auth")
-        })
         window.ipc.receive("auto-auth-response", res => {
             if (res) {
                 this.props.history.push("/launcher")
@@ -142,7 +138,7 @@ class Auth extends Component {
 
     handleLogin = () => {
         const { t } = this.props
-        const { email, password } = this.state
+        const { email, password, rememberMe } = this.state
         const usernameRegex = /^[a-zA-Z0-9_]{1,16}$/
         const emailRegex = /^\S+@\S+\.\S+$/
         this.setState({ isAuthenticating: true })
@@ -154,17 +150,17 @@ class Auth extends Component {
             this.openErrorBox(t("auth.errors.wrong-username"))
         }
         else {
-            window.ipc.send("mojang-login", { username: email, password: password })
+            window.ipc.send("mojang-login", { username: email, password: password, autoAuth: rememberMe })
         }
 
 
     }
 
     handleMicrosoftLogin = () => {
-        const { isAuthenticating } = this.state
+        const { isAuthenticating, rememberMe } = this.state
         if (!isAuthenticating) {
             this.setState({ isAuthenticating: true })
-            window.ipc.send("microsoft-login")
+            window.ipc.send("microsoft-login", { autoAuth: rememberMe })
         }
 
     }

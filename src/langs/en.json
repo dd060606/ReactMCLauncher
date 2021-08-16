@@ -42,7 +42,9 @@
   "launcher": {
     "play": "Play",
     "server-status": "Server status",
-    "players": "Players"
+    "players": "Players",
+    "maintenance": "Maintenance",
+    "news": "News"
   },
   "update": {
     "errors": {
@@ -61,5 +63,14 @@
     "analyzing-java": "Analyzing Java Installation",
     "extracting-java": "Extracting Java",
     "launching-game": "Launching game"
+  },
+  "settings": {
+    "settings": "Settings",
+    "memory": "Memory",
+    "open-game-dir": "Open game directory",
+    "auto-auth": "Auto authentication",
+    "keep-launcher-open": "Keep the launcher open",
+    "account": "Account",
+    "logout": "Logout"
   }
 }

@@ -1,0 +1,146 @@
+.settings-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Open Sans", sans-serif;
+
+}
+.settings-content .title-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.settings-content .title-box > h1 {
+    color: white;
+}
+.settings-content .title-box > i {
+    color: white;
+    font-size: 30px;
+    margin-right: 20px;
+    padding: 5px;
+    border-radius: 15px;
+    transition: 0.3s background;
+}
+.settings-content .title-box > i:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transition: 0.3s background;
+    cursor: pointer;
+}
+.settings-content .settings-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+}
+.settings-content .settings-box .line {
+    width: 90%;
+    height: 1px;
+    background-color: white;
+    align-self: center;
+}
+.settings-content .settings-box > section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.settings-content .settings-box > section >  h2{
+    color: white;
+    margin-bottom: 0px;
+    margin-left: 25px;
+}
+.settings-content .settings-box > section >  h4{
+    color: white;
+    margin-bottom: 0px;
+    margin-left: 35px;
+}
+
+.settings-content .MuiSlider-root {
+    color: #54c2f0;
+    height: 8px;
+    margin-left: 50px;
+    width: 70%;
+}
+.settings-content .settings-box .minecraft button {
+    width: 300px;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    margin-left: 35px;
+    margin-top: 15px;
+    text-transform: none;
+}
+
+.settings-content .MuiSlider-root  .MuiSlider-thumb {
+    height: 24px;
+    width: 24px;
+    background-color: white;
+    border: 2px solid currentColor;
+    margin-top: -8px;
+    margin-left: -12px;
+}
+.settings-content .MuiSlider-root .MuiSlider-thumb:focus,.settings-content .MuiSlider-root .MuiSlider-thumb:hover, .settings-content .MuiSlider-root .MuiSlider-thumb:active {
+    box-shadow: inherit;
+}
+.settings-content .MuiSlider-root .MuiSlider-valueLabel {
+    left: calc(-50% + 4px);
+}
+.settings-content .MuiSlider-root .MuiSlider-track {
+    height: 8px;
+    border-radius: 4px;
+}
+.settings-content .MuiSlider-root .MuiSlider-rail	 {
+    height: 8px;
+    border-radius: 4px;
+}
+.settings-content .switch-label {
+    color: white;
+    align-self: flex-start;
+    margin-left: 35px;
+}
+.settings-content .account-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+    background: rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+    border-radius: 7px;
+    margin-bottom: 15px;
+    height: 60px;
+    width: 80%;
+}
+.settings-content .account-box div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.settings-content .account-box div span {
+    margin-left: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    
+}
+.settings-content .account-box img {
+    user-select: none;
+    -webkit-user-select: none;
+    height: 50px;
+    margin-left: 10px;
+    -webkit-user-drag: none;
+}
+.settings-content .account-box .logout-button{
+    border-radius: 7px;
+    border: 1px solid #FB411C;
+    color: white;
+    margin-right: 10px;
+    text-transform: none;
+}
+.settings-content .account-box .logout-button:hover{
+    background-color: rgba(251, 65, 28, 0.1);
+}

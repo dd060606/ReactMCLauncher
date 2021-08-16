@@ -11,29 +11,46 @@ const axios = require("axios")
 
 
 exports.init = () => {
-    ipc.on("mojang-login", (event, args) => mojangLogin(args.username, args.password, args.rememberMe))
-    ipc.on("microsoft-login", () => AuthManager.addMicrosoftAccount())
+    ipc.on("mojang-login", (event, args) => {
+        ConfigManager.setAutoAuthEnabled(args.autoAuth)
+        ConfigManager.saveConfig()
+        mojangLogin(args.username, args.password)
+    })
+    ipc.on("microsoft-login", (event, args) => {
+        ConfigManager.setAutoAuthEnabled(args.autoAuth)
+        ConfigManager.saveConfig()
+        AuthManager.addMicrosoftAccount()
+    })
     ipc.on("auto-auth", async () => {
 
-        const selectedAcc = ConfigManager.getSelectedAccount()
-        if (selectedAcc != null) {
-            const val = await AuthManager.validateSelected()
-            if (!val) {
-                ConfigManager.removeAuthAccount(selectedAcc.uuid)
-                ConfigManager.saveConfig()
+        if (ConfigManager.isAutoAuthEnabled()) {
+            const selectedAcc = ConfigManager.getSelectedAccount()
+            if (selectedAcc != null) {
+                const val = await AuthManager.validateSelected()
+                if (!val) {
+                    ConfigManager.removeAuthAccount(selectedAcc.uuid)
+                    ConfigManager.saveConfig()
+                    loggerLogin.error("Failed to refresh login!")
+                    main.win.webContents.send("auto-auth-response", false)
+                } else {
+                    loggerLogin.log("Sucessfully authenticated!")
+                    main.win.webContents.send("auto-auth-response", true)
+                }
+            } else {
                 loggerLogin.error("Failed to refresh login!")
                 main.win.webContents.send("auto-auth-response", false)
-            } else {
-                loggerLogin.log("Sucessfully authenticated!")
-                main.win.webContents.send("auto-auth-response", true)
             }
-        } else {
-            loggerLogin.error("Failed to refresh login!")
+        }
+        else {
             main.win.webContents.send("auto-auth-response", false)
-
         }
     })
-    ipc.on("is-auto-auth", () => main.win.webContents.send("is-auto-auth-response", ConfigManager.isAutoAuthEnabled()))
+
+    ipc.on("logout", (event, args) => {
+        ConfigManager.setAutoAuthEnabled(false)
+        ConfigManager.saveConfig()
+        AuthManager.removeAccount(ConfigManager.getSelectedAccount().uuid).then().catch(err => loggerLogin.error(err))
+    })
 
 
     ipc.on("get-player-name", event => {
@@ -48,8 +65,8 @@ exports.init = () => {
 }
 
 
-function mojangLogin(username, password, autoAuth) {
-    AuthManager.addAccount(username, password, autoAuth).then((value) => {
+function mojangLogin(username, password) {
+    AuthManager.addAccount(username, password).then((value) => {
         setTimeout(() => {
             main.win.webContents.send("auth-success")
         }, 1000)

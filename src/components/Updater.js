@@ -67,11 +67,12 @@ class Updater extends Component {
                     this.openErrorBox(errorMessage, t("update.errors.mods-error"))
                     break
                 default:
-                    this.setState(errorMessage)
+                    this.openErrorBox(errorMessage)
                     break
             }
 
         })
+        window.ipc.receive("return-to-launcher", () => this.props.history.push("/launcher"))
     }
     openErrorBox(message, title = "") {
         const { t } = this.props

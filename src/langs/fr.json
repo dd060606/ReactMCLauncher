@@ -42,7 +42,9 @@
   "launcher": {
     "play": "Jouer",
     "server-status": "Status du serveur",
-    "players": "Joueurs"
+    "players": "Joueurs",
+    "maintenance": "Maintenance",
+    "news": "Informations"
   },
   "update": {
     "errors": {
@@ -61,5 +63,14 @@
     "analyzing-java": "Analyse de Java",
     "extracting-java": "Extraction de Java",
     "launching-game": "Lancement du jeu"
+  },
+  "settings": {
+    "settings": "Paramètres",
+    "memory": "Mémoire",
+    "open-game-dir": "Ouvrir le répertoire du jeu",
+    "auto-auth": "Connexion automatique",
+    "keep-launcher-open": "Garder le launcher ouvert",
+    "account": "Compte",
+    "logout": "Déconnexion"
   }
 }

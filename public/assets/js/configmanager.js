@@ -50,7 +50,8 @@ const DEFAULT_CONFIG = {
             maxRAM: resolveMaxRAM(),
         },
         launcher: {
-            dataDirectory: dataPath
+            dataDirectory: dataPath,
+            keepLauncherOpen: false
         }
     },
     clientToken: null,
@@ -372,7 +373,24 @@ exports.isAutoAuthEnabled = function () {
  * 
  * @param {boolean} autoAuth Whether or not the launcher automatically authenticates the player.
  */
-exports.setAutoAuth = function (autoAuth) {
+exports.setAutoAuthEnabled = function (autoAuth) {
     config.autoAuth = autoAuth
 }
 
+/**
+ * Check if keep launcher open is enabled or not
+ * 
+ * @returns {boolean} Whether or not the launcher closes after starting the game.
+ */
+exports.isKeepLauncherOpenEnabled = function () {
+    return config.settings.launcher.keepLauncherOpen
+}
+
+/**
+ * Set keep launcher open enabled or not
+ * 
+ * @param {boolean} keepLauncherOpen Whether or not the launcher closes after starting the game.
+ */
+exports.setKeepLauncherOpenEnabled = function (keepLauncherOpen) {
+    config.settings.launcher.keepLauncherOpen = keepLauncherOpen
+}

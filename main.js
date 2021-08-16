@@ -10,8 +10,6 @@ const login = require("./public/assets/js/login")
 const game = require("./public/assets/js/game")
 
 
-
-
 let win
 
 
@@ -83,9 +81,7 @@ app.on("activate", () => {
 })
 
 
-exports.SERVER_IP = "mc.hypixel.net"
-exports.SERVER_PORT = "25565"
-exports.LAUNCHER_CONFIG = "https://dd06-dev.fr/dl/studycorp/launchers/launcher_config.json"
+exports.LAUNCHER_CONFIG = "https://dd06-dev.fr/dl/react-mc-launcher/launcher_config.json"
 exports.LAUNCHER_NAME = "ReactMCLauncher"
 exports.MC_VERSION = "1.12.2"
 exports.FORGE_VERSION = "14.23.5.2855"
