@@ -7,6 +7,7 @@ import Auth from "./components/Auth"
 import Launcher from "./components/Launcher"
 import Updater from "./components/Updater"
 import Settings from "./components/Settings"
+import LauncherUpdater from "./components/LauncherUpdater"
 
 
 
@@ -16,7 +17,8 @@ ReactDOM.render(
       <Frame />
       <Router>
         <Switch>
-          <Route path="/" exact component={Auth} />
+          <Route path="/" exact component={LauncherUpdater} />
+          <Route path="/auth" exact component={Auth} />
           <Route path="/launcher" exact component={Launcher} />
           <Route path="/updater" exact component={Updater} />
           <Route path="/settings" exact component={Settings} />

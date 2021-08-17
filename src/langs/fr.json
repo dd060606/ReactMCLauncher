@@ -50,7 +50,8 @@
     "errors": {
       "java-download-error": "Erreur lors du téléchargement de Java",
       "forge-error": "Erreur lors de l'installation de Forge",
-      "mods-error": "Erreur lors du téléchargement des mods"
+      "mods-error": "Erreur lors du téléchargement des mods",
+      "launcher-error": "Erreur lors du téléchargement du launcher"
     },
     "searching-updates": "Recherche de mises à jours",
     "downloading-java": "Téléchargement de Java",
@@ -59,6 +60,7 @@
     "downloading-natives": "Téléchargement des natives",
     "downloading-libraries": "Téléchargement des libraries",
     "downloading-mods": "Téléchargement des mods",
+    "downloading-launcher": "Téléchargement du launcher",
     "installing-forge": "Installation de Forge",
     "analyzing-java": "Analyse de Java",
     "extracting-java": "Extraction de Java",

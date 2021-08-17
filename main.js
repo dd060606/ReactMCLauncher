@@ -8,6 +8,13 @@ const mainIPC = require("./public/assets/js/mainIPC")
 const ConfigManager = require('./public/assets/js/configmanager')
 const login = require("./public/assets/js/login")
 const game = require("./public/assets/js/game")
+const { autoUpdater } = require("electron-updater")
+
+const log = require("electron-log")
+log.transports.file.level = "debug"
+autoUpdater.logger = log
+
+
 
 
 let win
@@ -54,6 +61,8 @@ function createWindow() {
     exports.win = win
 
 
+
+
 }
 
 
@@ -66,6 +75,43 @@ app.whenReady().then(() => {
     mainIPC.initMainIPC()
     login.init()
     game.init()
+
+    setTimeout(() => {
+        if (process.platform !== 'darwin') {
+            if (isDev) {
+                autoUpdater.autoInstallOnAppQuit = false
+                autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml')
+            }
+            else {
+                autoUpdater.autoInstallOnAppQuit = true
+            }
+
+            autoUpdater.on('update-downloaded', (info) => {
+                win.webContents.send("launcher-update-finished")
+            })
+            autoUpdater.on('update-not-available', (info) => {
+                win.webContents.send("launcher-update-finished")
+            })
+            autoUpdater.on('error', (err) => {
+                win.webContents.send("launcher-update-error", err)
+            })
+            autoUpdater.on('download-progress', (progress) => {
+                win.webContents.send("set-launcher-update-progress", progress.percent)
+            })
+            autoUpdater.checkForUpdatesAndNotify().then(() => {
+                setTimeout(() => {
+                    win.webContents.send("launcher-update-finished")
+                }, 100)
+            })
+        }
+        else {
+            setTimeout(() => {
+                win.webContents.send("launcher-update-finished")
+            }, 100)
+        }
+    }, 500)
+
+
 })
 
 app.on("window-all-closed", () => {

@@ -17,6 +17,7 @@
     "axios": "^0.21.1",
     "electron-is-dev": "^2.0.0",
     "electron-localshortcut": "^3.2.1",
+    "electron-log": "^4.4.1",
     "electron-updater": "^4.3.9",
     "fs-extra": "^9.1.0",
     "i18next": "^20.2.2",
@@ -67,47 +68,5 @@
     "electron": "^13.1.6",
     "electron-builder": "^22.11.7",
     "wait-on": "^6.0.0"
-  },
-  "build": {
-    "appId": "reactmclauncher",
-    "productName": "ReactMCLauncher",
-    "artifactName": "${productName}.${ext}",
-    "directories": {
-      "buildResources": "build",
-      "output": "dist"
-    },
-    "win": {
-      "target": "portable",
-      "icon": "build/icon.ico"
-    },
-    "mac": {
-      "target": "dmg",
-      "category": "public.app-category.games",
-      "icon": "build/icon.icns",
-      "type": "distribution"
-    },
-    "linux": {
-      "target": "AppImage",
-      "maintainer": "dd_06",
-      "vendor": "ReactMCLauncher",
-      "synopsis": "Minecraft launcher",
-      "description": "Minecraft launcher",
-      "category": "Game"
-    },
-    "deb": {
-      "compression": "xz",
-      "packageCategory": "Games",
-      "priority": "optional"
-    },
-    "compression": "maximum",
-    "files": [
-      "build/**/*",
-      "node_modules/**/*",
-      "./main.js",
-      "public/",
-      "./preload.js"
-    ],
-    "asar": true,
-    "extends": null
   }
 }

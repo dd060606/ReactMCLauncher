@@ -50,7 +50,8 @@
     "errors": {
       "java-download-error": "Error while downloading Java",
       "forge-error": "Error while installing Forge",
-      "mods-error": "Error while downloading mods"
+      "mods-error": "Error while downloading mods",
+      "launcher-error": "Error while downloading the launcher"
     },
     "searching-updates": "Searching updates",
     "downloading-java": "Downloading Java",
@@ -59,6 +60,7 @@
     "downloading-natives": "Downloading natives",
     "downloading-libraries": "Downloading libraries",
     "downloading-mods": "Downloading mods",
+    "downloading-launcher": "Downloading the launcher",
     "installing-forge": "Installing Forge",
     "analyzing-java": "Analyzing Java Installation",
     "extracting-java": "Extracting Java",
