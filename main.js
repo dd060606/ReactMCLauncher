@@ -22,6 +22,7 @@ let win
 
 function createWindow() {
 
+
     win = new BrowserWindow({
         width: 1280,
         height: 729,
@@ -75,6 +76,8 @@ app.whenReady().then(() => {
     mainIPC.initMainIPC()
     login.init()
     game.init()
+    console.log("Launcher version: " + app.getVersion())
+
 
     setTimeout(() => {
         if (process.platform !== 'darwin') {
@@ -86,23 +89,24 @@ app.whenReady().then(() => {
                 autoUpdater.autoInstallOnAppQuit = true
             }
 
-            autoUpdater.on('update-downloaded', (info) => {
+            autoUpdater.on('update-downloaded', () => {
                 win.webContents.send("launcher-update-finished")
+
             })
-            autoUpdater.on('update-not-available', (info) => {
+            autoUpdater.on('update-not-available', () => {
                 win.webContents.send("launcher-update-finished")
             })
             autoUpdater.on('error', (err) => {
                 win.webContents.send("launcher-update-error", err)
             })
             autoUpdater.on('download-progress', (progress) => {
-                win.webContents.send("set-launcher-update-progress", progress.percent)
+                win.webContents.send("set-launcher-update-progress", progress.percent.toFixed(2))
             })
-            autoUpdater.checkForUpdatesAndNotify().then(() => {
-                setTimeout(() => {
-                    win.webContents.send("launcher-update-finished")
-                }, 100)
+            autoUpdater.checkForUpdates().catch(err => {
+                win.webContents.send("launcher-update-error", err)
             })
+
+
         }
         else {
             setTimeout(() => {

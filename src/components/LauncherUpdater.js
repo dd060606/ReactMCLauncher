@@ -15,11 +15,11 @@ class LauncherUpdater extends Component {
     componentDidMount() {
         const { t } = this.props
         this.setState({ updateText: t("update.searching-updates") + "..." })
-        window.ipc.receive("set-launcher-update-text", (text) => {
-            const { progress } = this.state
-            this.setState({ updateText: t("update.downloading-launcher") + "... (" + progress + "%)" })
+
+        window.ipc.receive("set-launcher-update-progress", (percent) => {
+            this.setState({ updateText: t("update.downloading-launcher") + "... (" + percent + "%)" })
+            this.setState({ progress: percent })
         })
-        window.ipc.receive("set-launcher-update-progress", (progress) => this.setState({ progress: progress }))
         window.ipc.receive("launcher-update-error", (errorMessage) => {
             this.openErrorBox(errorMessage, t("update.errors.launcher-error"))
         })
