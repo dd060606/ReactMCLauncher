@@ -54,7 +54,7 @@ class Settings extends Component {
     }
     handleLogoutClick = () => {
         window.ipc.send("logout")
-        this.props.history.push("/")
+        this.props.history.push("/auth")
     }
 
     render() {
