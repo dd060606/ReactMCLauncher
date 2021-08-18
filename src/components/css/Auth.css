@@ -1,0 +1,133 @@
+
+.auth-content {
+    display: flex;
+    margin-top: 50px;
+    flex-direction: column;
+    align-items: center;
+}
+.auth-content > img {
+    width: 100px;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
+.auth-box {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+    width: 400px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    font-family: "Open Sans", sans-serif;
+}
+.auth-box h2 {
+    color: white;
+}
+.auth-box .field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    height: 25px;
+    width: 300px;
+    margin-bottom: 30px;
+}
+
+.auth-box .field> i {
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 20px;
+
+}
+.auth-box .field > input{
+    border:none;
+    font-family: "Open Sans",sans-serif;
+    color: white;
+    outline: none;
+    text-align: center;
+    font-size: 16px;
+    background-color: transparent;
+    height: 23px;
+    width:100%;
+    border-bottom: solid 1px transparent;
+    transition: border 0.2s ease-in-out;
+}
+.auth-box .field > input:focus  {
+    border-color: white;
+    transition: border 0.3s ease-in-out;
+}
+
+.auth-box .field > input:focus + .underline-animation{
+    left: 0;
+  }
+.auth-box .field > input::placeholder{
+    color: white;
+}
+.auth-box #username-field {
+    margin-right: 36px;
+}
+
+.auth-box .auth-selector {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.auth-box .auth-selector .auth-type{
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    height: 25px;
+    align-items: center;
+    background-color: white;
+    font-family: "Open Sans", sans-serif;
+    border-radius: 15px;
+    font-weight: 600;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.auth-box .auth-selector .auth-type:hover{
+    cursor: pointer;
+}
+
+.auth-box .auth-selector .auth-type > img{
+    margin-left: 2px;
+    margin-right: 5px;
+}
+.auth-box .login-button {
+    background-color: #56B5FC;
+    text-transform: none;
+    color: white;
+    width: 150px;
+    height: 40px;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.auth-box .login-button:hover {
+    background-color: #46A9F8;
+}
+
+
+.auth-box .MuiCircularProgress-colorPrimary {
+    color: white !important;
+}
+.auth-box .remember-me-label {
+    color: white;
+    margin-bottom: 15px;
+}
+.auto-auth-text > .MuiCircularProgress-colorPrimary{
+    color: #56B5FC !important;
+    margin-left: 10px;
+    
+}
+.auth-content .auto-auth-text {
+    color: white;
+    font-size: large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}

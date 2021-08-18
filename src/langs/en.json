@@ -1,0 +1,78 @@
+{
+  "error": "Error",
+  "auth": {
+    "errors": {
+      "wrong-username": "Wrong username",
+      "complete-all-fields": "Please complete all fields!",
+      "userMigrated": {
+        "title": "Error: Invalid Credentials",
+        "desc": "You've attempted to login with a migrated account. Try again using the account email as the username."
+      },
+      "invalidCredentials": {
+        "title": "Error: Invalid Credentials",
+        "desc": "The email or password you've entered is incorrect. Please try again."
+      },
+      "rateLimit": {
+        "title": "Error: Too Many Attempts",
+        "desc": "There have been too many login attempts with this account recently. Please try again later."
+      },
+      "noInternet": {
+        "title": "Error: No Internet Connection",
+        "desc": "You must be connected to the internet in order to login. Please connect and try again."
+      },
+      "authDown": {
+        "title": "Error: Authentication Server Offline",
+        "desc": "Mojang's authentication server is currently offline or unreachable. Please wait a bit and try again. You can check the status of the server on <a href=\"https://help.mojang.com/\">Mojang's help portal</a>."
+      },
+      "notPaid": {
+        "title": "Error: Game Not Purchased",
+        "desc": "The account you are trying to login with has not purchased a copy of Minecraft.<br>You may purchase a copy on <a href=\"https://minecraft.net/\">Minecraft.net</a>"
+      },
+      "unknown": {
+        "title": "Unknown Error"
+      }
+    },
+    "authentication": "Authentication",
+    "logging-in": "Logging in",
+    "login": "Login",
+    "email": "E-mail",
+    "password": "Password",
+    "remember-me": "Remember Me"
+  },
+  "launcher": {
+    "play": "Play",
+    "server-status": "Server status",
+    "players": "Players",
+    "maintenance": "Maintenance",
+    "news": "News"
+  },
+  "update": {
+    "errors": {
+      "java-download-error": "Error while downloading Java",
+      "forge-error": "Error while installing Forge",
+      "mods-error": "Error while downloading mods",
+      "launcher-error": "Error while downloading the launcher"
+    },
+    "searching-updates": "Searching updates",
+    "downloading-java": "Downloading Java",
+    "downloading-forge": "Downloading Forge",
+    "downloading-assets": "Downloading assets",
+    "downloading-natives": "Downloading natives",
+    "downloading-libraries": "Downloading libraries",
+    "downloading-mods": "Downloading mods",
+    "downloading-launcher": "Downloading the launcher",
+    "installing-forge": "Installing Forge",
+    "analyzing-java": "Analyzing Java Installation",
+    "extracting-java": "Extracting Java",
+    "launching-game": "Launching game"
+  },
+  "settings": {
+    "settings": "Settings",
+    "memory": "Memory",
+    "open-game-dir": "Open game directory",
+    "auto-auth": "Auto authentication",
+    "keep-launcher-open": "Keep the launcher open",
+    "account": "Account",
+    "logout": "Logout"
+  }
+}

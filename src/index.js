@@ -1,17 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react"
+import ReactDOM from "react-dom"
+import "./index.css"
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
+import Frame from "./components/Frame"
+import Auth from "./components/Auth"
+import Launcher from "./components/Launcher"
+import Updater from "./components/Updater"
+import Settings from "./components/Settings"
+import LauncherUpdater from "./components/LauncherUpdater"
+
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+    <div id="main" style={{ backgroundImage: `url("${process.env.PUBLIC_URL}/assets/images/background.png")` }}>
+      <Frame />
+      <Router>
+        <Switch>
+          <Route path="/" exact component={LauncherUpdater} />
+          <Route path="/auth" exact component={Auth} />
+          <Route path="/launcher" exact component={Launcher} />
+          <Route path="/updater" exact component={Updater} />
+          <Route path="/settings" exact component={Settings} />
+        </Switch>
+      </Router>
+    </div>
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  </React.StrictMode>,
+  document.getElementById("root")
+)
+
+

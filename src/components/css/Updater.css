@@ -1,0 +1,36 @@
+.updater-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Open Sans", sans-serif;
+    height: 95%;
+}
+.updater-content .update-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+    height: 250px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 30px;
+
+}
+.updater-content .update-box > img{
+    -webkit-user-drag: none;
+    user-select: none;
+    width: 100px;
+}
+.updater-content .update-box > h3{
+    color: white;
+}
+.updater-content .update-box .MuiLinearProgress-root	{
+    height: 15px;
+    width: 90%;
+    border-radius: 5px;
+}
+.updater-content .update-box .MuiLinearProgress-bar	{
+    border-radius: 5px;
+    background-color: #56B5FC;
+}
