@@ -73,6 +73,7 @@ class Updater extends Component {
 
         })
         window.ipc.receive("return-to-launcher", () => this.props.history.push("/launcher"))
+
     }
     openErrorBox(message, title = "") {
         const { t } = this.props

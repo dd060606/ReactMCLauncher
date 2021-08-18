@@ -43,6 +43,7 @@ linux:
   synopsis: "Modded Minecraft Launcher"
   description: "Modded Minecraft Launcher"
   category: "Game"
+  icon: "icons/icon.png"
 
 directories:
   buildResources: "icons"

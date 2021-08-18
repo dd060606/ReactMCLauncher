@@ -4,6 +4,8 @@ const fs = require("fs")
 const isDev = require("electron-is-dev")
 const electronLocalshortcut = require("electron-localshortcut")
 
+const ipc = require("electron").ipcMain
+
 const mainIPC = require("./public/assets/js/mainIPC")
 const ConfigManager = require('./public/assets/js/configmanager')
 const login = require("./public/assets/js/login")
@@ -79,42 +81,6 @@ app.whenReady().then(() => {
     console.log("Launcher version: " + app.getVersion())
 
 
-    setTimeout(() => {
-        if (process.platform !== 'darwin') {
-            if (isDev) {
-                autoUpdater.autoInstallOnAppQuit = false
-                autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml')
-            }
-            else {
-                autoUpdater.autoInstallOnAppQuit = true
-            }
-
-            autoUpdater.on('update-downloaded', () => {
-                win.webContents.send("launcher-update-finished")
-
-            })
-            autoUpdater.on('update-not-available', () => {
-                win.webContents.send("launcher-update-finished")
-            })
-            autoUpdater.on('error', (err) => {
-                win.webContents.send("launcher-update-error", err)
-            })
-            autoUpdater.on('download-progress', (progress) => {
-                win.webContents.send("set-launcher-update-progress", progress.percent.toFixed(2))
-            })
-            autoUpdater.checkForUpdates().catch(err => {
-                win.webContents.send("launcher-update-error", err)
-            })
-
-
-        }
-        else {
-            setTimeout(() => {
-                win.webContents.send("launcher-update-finished")
-            }, 100)
-        }
-    }, 500)
-
 
 })
 
@@ -127,6 +93,39 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow()
+    }
+})
+
+ipc.on("check-auto-update", () => {
+
+    if (process.platform !== 'darwin') {
+        if (isDev) {
+            autoUpdater.autoInstallOnAppQuit = false
+            autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml')
+        }
+        else {
+            autoUpdater.autoInstallOnAppQuit = true
+        }
+
+        autoUpdater.on('update-downloaded', () => {
+            win.webContents.send("launcher-update-finished")
+
+        })
+        autoUpdater.on('update-not-available', () => {
+            win.webContents.send("launcher-update-finished")
+        })
+        autoUpdater.on('error', (err) => {
+            win.webContents.send("launcher-update-error", err)
+        })
+        autoUpdater.on('download-progress', (progress) => {
+            win.webContents.send("set-launcher-update-progress", progress.percent.toFixed(2))
+        })
+        autoUpdater.checkForUpdates().catch(err => {
+            win.webContents.send("launcher-update-error", err)
+        })
+    }
+    else {
+        win.webContents.send("launcher-update-finished")
     }
 })
 

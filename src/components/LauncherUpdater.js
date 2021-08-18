@@ -16,6 +16,8 @@ class LauncherUpdater extends Component {
         const { t } = this.props
         this.setState({ updateText: t("update.searching-updates") + "..." })
 
+        window.ipc.send("check-auto-update")
+
         window.ipc.receive("set-launcher-update-progress", (percent) => {
             this.setState({ updateText: t("update.downloading-launcher") + "... (" + percent + "%)" })
             this.setState({ progress: percent })
@@ -24,7 +26,6 @@ class LauncherUpdater extends Component {
             this.openErrorBox(errorMessage, t("update.errors.launcher-error"))
         })
         window.ipc.receive("launcher-update-finished", () => {
-            console.log("be")
             this.props.history.push("/auth")
         })
     }
