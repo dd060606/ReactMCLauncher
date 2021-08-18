@@ -8,7 +8,12 @@ This launcher is based on [Helios Launcher][helioslauncher] and uses [MCLC][mclc
 
 ## Features
 
-In development...
+- 📂 Minecraft is automatically downloaded. Files are validated before launch. Corrupt or incorrect files will be redownloaded.
+- ☕ Java is automatically downloaded and installed if java is not installed.
+- 📰 News feed natively built into the launcher.
+- ⚙️ Intuitive settings management
+- Automatic updates. That's right, the launcher updates itself.
+- And more...
 
 ## Development
 
