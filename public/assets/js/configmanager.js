@@ -31,6 +31,9 @@ exports.getLauncherDirectory = function () {
  * @returns {string} The absolute path of the game directory.
  */
 exports.getGameDirectory = function () {
+    if (!fs.existsSync(gamePath)) {
+        fs.mkdirSync(gamePath, { recursive: true })
+    }
     return gamePath
 }
 

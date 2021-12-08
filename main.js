@@ -130,10 +130,10 @@ ipc.on("check-auto-update", () => {
 })
 
 
-exports.LAUNCHER_CONFIG = "https://dd06-dev.fr/dl/react-mc-launcher/launcher_config.json"
+exports.LAUNCHER_CONFIG = "https://dd06-dev.fr/dl/launchers/react-mc-launcher/launcher_config.json"
 exports.LAUNCHER_NAME = "ReactMCLauncher"
 exports.MC_VERSION = "1.12.2"
 exports.FORGE_VERSION = "14.23.5.2855"
 exports.JRE_WINDOWS = "https://dd06-dev.fr/dl/jre/jre-windows.zip"
 exports.JRE_LINUX = "https://dd06-dev.fr/dl/jre/jre-linux.zip"
-exports.MODS_URL = "https://dd06-dev.fr/dl/react-mc-launcher/mods.json"
+exports.MODS_URL = ""

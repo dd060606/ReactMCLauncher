@@ -1,0 +1,11 @@
+{
+  "maintenance": false,
+  "maintenanceMessage": "Le serveur est en maintenance",
+  "news": "Bienvenue sur ReactMCLauncher !",
+  "serverPort": 25565,
+  "serverIP": "mc.hypixel.net",
+  "youtube": "https://www.youtube.com/",
+  "discord": "https://discord.com/",
+  "twitter": "https://twitter.com/",
+  "web": "https://github.com/dd060606/ReactMCLauncher"
+}

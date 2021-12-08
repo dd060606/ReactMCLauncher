@@ -1,5 +1,4 @@
 const msmc = require("msmc")
-const fetch = require("node-fetch")
 /**
  * AuthManager
  * 
@@ -58,9 +57,9 @@ exports.addAccount = async function (username, password) {
  * @returns {Promise.<Object>} Promise which resolves the resolved authenticated account object.
  */
 exports.addMicrosoftAccount = async function () {
-    msmc.setFetch(fetch)
 
-    msmc.fastLaunch("raw",
+
+    msmc.fastLaunch("electron",
         (update) => {
             //A hook for catching loading bar events and errors, standard with MSMC
             if (update.data) {

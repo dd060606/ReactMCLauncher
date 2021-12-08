@@ -131,6 +131,9 @@ function checkJavaInstallation() {
             jreInstallationFile = path.join(jrePath, "jre-linux.zip")
         }
 
+        if (fs.existsSync(jrePath) && fs.readdirSync(jrePath).length !== 0) {
+            return resolve(jrePath)
+        }
         if (fs.existsSync(jreInstallationFile)) {
             fs.unlink(jreInstallationFile, (err) => {
                 if (err) {
@@ -222,7 +225,7 @@ async function downloadJava(fileURL, targetPath, jrePath) {
                     }
                     javaLogger.log("Java installation file was successfully removed!")
                 })
-                updateAndLaunch(jre_path)
+                updateAndLaunch(jrePath)
             }
             else {
                 javaLogger.error("Error while downloading java!")
@@ -361,33 +364,38 @@ async function downloadMods() {
             return false
         }
     }
+    else {
+        return true
+    }
 
 }
 async function analyseMods() {
-    try {
+    if (main.MODS_URL) {
+        try {
 
-        const modsDir = path.join(ConfigManager.getGameDirectory(), "mods")
-        if (!fs.existsSync(modsDir)) {
-            fs.mkdirSync(modsDir)
+            const modsDir = path.join(ConfigManager.getGameDirectory(), "mods")
+            if (!fs.existsSync(modsDir)) {
+                fs.mkdirSync(modsDir)
+            }
+            const response = await Axios.get(main.MODS_URL)
+            fs.readdirSync(modsDir).forEach(file => {
+                let sha1Array = []
+                for (let i = 0; i < response.data.mods.length; i++) {
+                    sha1Array.push(response.data.mods[i].sha1)
+                }
+                const modFileContent = fs.readFileSync(path.join(modsDir, file))
+                let modSha1 = crypto.createHash("sha1").update(modFileContent).digest("hex")
+                if (!sha1Array.includes(modSha1)) {
+                    fs.unlinkSync(path.join(modsDir, file))
+                }
+            })
+
+
         }
-        const response = await Axios.get(main.MODS_URL)
-        fs.readdirSync(modsDir).forEach(file => {
-            let sha1Array = []
-            for (let i = 0; i < response.data.mods.length; i++) {
-                sha1Array.push(response.data.mods[i].sha1)
-            }
-            const modFileContent = fs.readFileSync(path.join(modsDir, file))
-            let modSha1 = crypto.createHash("sha1").update(modFileContent).digest("hex")
-            if (!sha1Array.includes(modSha1)) {
-                fs.unlinkSync(path.join(modsDir, file))
-            }
-        })
-
-
-    }
-    catch (err) {
-        gameLogger.error(err.message)
-        main.win.webContents.send("update-error", "ModsError", err.message)
+        catch (err) {
+            gameLogger.error(err.message)
+            main.win.webContents.send("update-error", "ModsError", err.message)
+        }
     }
 }
 async function downloadMod(fileURL, targetPath, modSize) {
