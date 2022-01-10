@@ -25,8 +25,44 @@ class LauncherUpdater extends Component {
         window.ipc.receive("launcher-update-error", (errorMessage) => {
             this.openErrorBox(errorMessage, t("update.errors.launcher-error"))
         })
-        window.ipc.receive("launcher-update-finished", () => {
-            this.props.history.push("/auth")
+        window.ipc.receive("launcher-update-finished", askToInstallUpdates => {
+            if (askToInstallUpdates) {
+                Swal.fire({
+                    title: t("update.download-finished"),
+                    text: t("update.install-updates"),
+                    icon: "question",
+                    iconColor: "#54c2f0",
+                    confirmButtonColor: "#54c2f0",
+                    confirmButtonText: t("confirm"),
+                    cancelButtonText: t("cancel"),
+                    showCancelButton: true,
+                    background: "#333"
+                }
+                ).then(res => {
+                    if (res.isConfirmed) {
+                        window.ipc.send("install-updates")
+
+                    }
+                    this.props.history.push("/auth")
+
+                })
+            }
+            else {
+                this.props.history.push("/auth")
+            }
+        })
+        window.ipc.receive("update-available-mac", () => {
+            Swal.fire({
+                title: t("update.update-available"),
+                html: `${t("update.new-update-available")}`,
+                icon: "info",
+                confirmButtonColor: "#54c2f0",
+                background: "#333"
+            }
+            ).then(() => {
+                this.props.history.push("/auth")
+            })
+
         })
     }
     openErrorBox(message, title = "") {

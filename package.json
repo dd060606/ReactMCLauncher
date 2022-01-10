@@ -21,6 +21,7 @@
     "electron-updater": "^4.6.1",
     "fs-extra": "^10.0.0",
     "i18next": "^21.5.4",
+    "node-fetch": "^2.6.0",
     "minecraft-launcher-core": "^3.16.9",
     "minecraft-server-ping": "^0.0.8",
     "msmc": "^3.0.1",

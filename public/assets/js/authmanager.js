@@ -16,6 +16,7 @@ const Mojang = require('./auth/mojang')
 const logger = LoggerUtil('%c[AuthManager]', 'color: #a02d2a; font-weight: bold')
 const { BrowserWindow } = require("electron")
 const main = require("../../../main")
+const nodeFetch = require("node-fetch")
 
 const loggerSuccess = LoggerUtil('%c[AuthManager]', 'color: #209b07; font-weight: bold')
 
@@ -58,7 +59,7 @@ exports.addAccount = async function (username, password) {
  */
 exports.addMicrosoftAccount = async function () {
 
-
+    msmc.setFetch(nodeFetch)
     msmc.fastLaunch("electron",
         (update) => {
             //A hook for catching loading bar events and errors, standard with MSMC
@@ -80,7 +81,7 @@ exports.addMicrosoftAccount = async function () {
             main.win.webContents.send("auth-success")
         }).catch(reason => {
             //If the login fails
-            logger.error("Error while logging in : " + reason)
+            logger.error("Error while logging in : " + reason ? reason : "Unknown error")
             main.win.webContents.send("microsoft-auth-err", reason)
 
         })

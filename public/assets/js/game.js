@@ -131,7 +131,7 @@ function checkJavaInstallation() {
             jreInstallationFile = path.join(jrePath, "jre-linux.zip")
         }
 
-        if (fs.existsSync(jrePath) && fs.readdirSync(jrePath).length !== 0) {
+        if (fs.existsSync(jrePath) && fs.readdirSync(jrePath).length !== 0 && !fs.existsSync(jreInstallationFile)) {
             return resolve(jrePath)
         }
         if (fs.existsSync(jreInstallationFile)) {
@@ -145,13 +145,10 @@ function checkJavaInstallation() {
 
         var spawn = require("child_process").spawn("java", ["-version"])
         spawn.on("error", function (err) {
-            if (fs.existsSync(jrePath) && fs.readdirSync(jrePath).length !== 0) {
-                return resolve(jrePath)
-            }
-            else {
-                javaLogger.log("No java installation found!")
-                return reject()
-            }
+
+            javaLogger.log("No java installation found!")
+            return reject()
+
 
         })
         spawn.stderr.on("data", function (data) {

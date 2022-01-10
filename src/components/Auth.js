@@ -25,7 +25,12 @@ class Auth extends Component {
             this.openErrorBox(this.resolveError(err).desc, this.resolveError(err).title)
         })
         window.ipc.receive("microsoft-auth-err", err => {
-            this.openErrorBox(err)
+            if (err) {
+                this.openErrorBox(err)
+            }
+            else {
+                this.setState({ isAuthenticating: false })
+            }
         })
         window.ipc.receive("auth-success", () => this.props.history.push("/launcher"))
 
