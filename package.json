@@ -1,49 +1,46 @@
 {
-  "name": "react-mc-launcher",
-  "productName": "ReactMCLauncher",
-  "version": "1.0.0",
+  "name": "react-ts-mc-launcher",
+  "version": "0.1.0",
   "private": true,
-  "main": "main.js",
-  "author": {
-    "name": "dd_06"
-  },
-  "description": "D",
-  "homepage": "./",
+  "homepage": ".",
+  "main": "build/electron/main.js",
+  "author": "dd_06",
+  "description": "Modded Minecraft Launcher",
   "dependencies": {
-    "@material-ui/core": "^4.12.3",
-    "@testing-library/jest-dom": "^5.15.1",
-    "@testing-library/react": "^12.1.2",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.5.1",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^0.24.0",
+    "@types/electron-devtools-installer": "^2.2.1",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^16.11.26",
+    "@types/react": "^17.0.40",
+    "@types/react-dom": "^17.0.13",
+    "electron-devtools-installer": "^3.2.0",
     "electron-is-dev": "^2.0.0",
-    "electron-localshortcut": "^3.2.1",
-    "electron-log": "^4.4.1",
-    "electron-updater": "^4.6.1",
-    "fs-extra": "^10.0.0",
-    "i18next": "^21.5.4",
-    "node-fetch": "^2.6.0",
-    "minecraft-launcher-core": "^3.16.9",
-    "minecraft-server-ping": "^0.0.8",
-    "msmc": "^3.0.1",
+    "electron-reloader": "^1.2.3",
+    "i18next": "^21.6.14",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-i18next": "^11.14.3",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.3",
-    "request": "^2.88.2",
-    "sweetalert2": "10.16.6",
-    "web-vitals": "^2.1.2"
+    "react-i18next": "^11.16.1",
+    "react-router-dom": "^6.2.2",
+    "react-scripts": "5.0.0",
+    "sweetalert2": "^11.4.5",
+    "sweetalert2-react-content": "^4.2.0",
+    "typescript": "^4.6.2",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "electron": "wait-on tcp:3000 && electron .",
-    "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test --env=jsdom",
-    "react-eject": "react-scripts eject",
-    "electron-build": "electron-builder",
-    "release": "npm run react-build && electron-builder --publish=always",
-    "build": "npm run react-build && npm run electron-build",
-    "start": "concurrently \"SET BROWSER=none&&npm run react-start\" npm:electron"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "postinstall": "electron-builder install-app-deps",
+    "electron:watch": "nodemon --watch \"electron/**/*\" -e ts --exec \"tsc -p electron && electron .\" ",
+    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
+    "electron:build": "yarn build && tsc -p electron && electron-builder",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -64,9 +61,10 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "^6.4.0",
-    "electron": "^16.0.3",
-    "electron-builder": "^22.14.5",
-    "wait-on": "^6.0.0"
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "electron": "^17.1.2",
+    "electron-builder": "^22.14.13",
+    "wait-on": "^6.0.1"
   }
 }
