@@ -22,7 +22,7 @@ type State = {
   autoAuth: boolean;
 };
 type Props = {
-  navigate: NavigateFunction;
+  navigate?: NavigateFunction;
 };
 
 class Auth extends Component<Props & WithTranslation, State> {
@@ -47,10 +47,13 @@ class Auth extends Component<Props & WithTranslation, State> {
         this.setState({ isAuthenticating: false });
       }
     });
+
+    // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
     window.ipc.receive("auth-success", () => this.props.navigate("/launcher"));
 
     window.ipc.receive("auto-auth-response", (res) => {
       if (res) {
+        // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
         this.props.navigate("/launcher");
       } else {
         this.setState({ autoAuth: false });
@@ -66,7 +69,6 @@ class Auth extends Component<Props & WithTranslation, State> {
    * error or Mojang error response.
    */
   resolveError(err: string) {
-    const { t } = this.props;
     /*
     // Mojang Response => err.cause | err.error | err.errorMessage
     // Node error => err.code | err.message
@@ -194,109 +196,125 @@ class Auth extends Component<Props & WithTranslation, State> {
     } = this.state;
     return (
       <div className="auth-content">
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/images/logo.png`}
-          alt="logo"
-        />
+        <img src={"assets/logo.png"} alt="logo" />
         {!autoAuth && (
           <div className="auth-box">
             <h2>{t("auth.authentication")}</h2>
             <div className="auth-selector">
               <div
                 className="auth-type"
-                style={{
-                  border: `2px solid ${
-                    currentAuthType === "mojang" ? "#56B5FC" : "white"
-                  }`,
-                }}
-              >
-                <img
-                  src={`${process.env.PUBLIC_URL}/assets/images/mojang.png`}
-                  alt="mojang"
-                  width={15}
-                />{" "}
-                Mojang
-              </div>
-              <div
-                className="auth-type"
-                onClick={this.handleMicrosoftLogin}
+                onClick={() => this.setState({ currentAuthType: "microsoft" })}
                 style={{
                   border: `2px solid ${
                     currentAuthType === "microsoft" ? "#56B5FC" : "white"
                   }`,
                 }}
               >
-                <img
-                  src={`${process.env.PUBLIC_URL}/assets/images/microsoft.png`}
-                  alt="microsoft"
-                  width={15}
-                />{" "}
+                <img src={`assets/microsoft.png`} alt="microsoft" width={15} />{" "}
                 Microsoft
               </div>
-            </div>
-            <div className="fields">
-              <div className="field">
-                <i className="fas fa-envelope"></i>
-                <input
-                  disabled={isAuthenticating}
-                  type="text"
-                  name="username-field"
-                  id="username-field"
-                  placeholder={t("auth.email")}
-                  value={email}
-                  onChange={(event) =>
-                    this.setState({ email: event.target.value })
-                  }
-                />
-                <span className="underline-animation"></span>
-              </div>
-              <div className="field">
-                <i className="fas fa-lock-alt"></i>
-                <input
-                  disabled={isAuthenticating}
-                  type={`${showPassword ? "text" : "password"}`}
-                  name="password-field"
-                  id="password-field"
-                  placeholder={t("auth.password")}
-                  value={password}
-                  onChange={(event) =>
-                    this.setState({ password: event.target.value })
-                  }
-                />
-                <i
-                  className={`fal ${showPassword ? "fa-eye" : "fa-eye-slash"}`}
-                  onClick={() => this.setState({ showPassword: !showPassword })}
-                ></i>
-                <span className="underline-animation"></span>
+              <div
+                className="auth-type"
+                onClick={() => this.setState({ currentAuthType: "offline" })}
+                style={{
+                  border: `2px solid ${
+                    currentAuthType === "offline" ? "#56B5FC" : "white"
+                  }`,
+                }}
+              >
+                {" "}
+                Offline
               </div>
             </div>
-
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={rememberMe}
-                  onChange={() => this.setState({ rememberMe: !rememberMe })}
-                  name="remember-me"
-                  style={{
-                    color: "#56B5FC",
-                  }}
+            {currentAuthType === "offline" && (
+              <>
+                {" "}
+                <div className="fields">
+                  <div className="field">
+                    <i className="fas fa-envelope"></i>
+                    <input
+                      disabled={isAuthenticating}
+                      type="text"
+                      name="username-field"
+                      id="username-field"
+                      placeholder={t("auth.email")}
+                      value={email}
+                      onChange={(event) =>
+                        this.setState({ email: event.target.value })
+                      }
+                    />
+                    <span className="underline-animation"></span>
+                  </div>
+                  <div className="field">
+                    <i className="fas fa-lock-alt"></i>
+                    <input
+                      disabled={isAuthenticating}
+                      type={`${showPassword ? "text" : "password"}`}
+                      name="password-field"
+                      id="password-field"
+                      placeholder={t("auth.password")}
+                      value={password}
+                      onChange={(event) =>
+                        this.setState({ password: event.target.value })
+                      }
+                    />
+                    <i
+                      className={`fal ${
+                        showPassword ? "fa-eye" : "fa-eye-slash"
+                      }`}
+                      onClick={() =>
+                        this.setState({ showPassword: !showPassword })
+                      }
+                    ></i>
+                    <span className="underline-animation"></span>
+                  </div>
+                </div>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={rememberMe}
+                      onChange={() =>
+                        this.setState({ rememberMe: !rememberMe })
+                      }
+                      name="remember-me"
+                      style={{
+                        color: "#56B5FC",
+                      }}
+                    />
+                  }
+                  label={t("auth.remember-me").toString()}
+                  className="remember-me-label"
                 />
-              }
-              label={t("auth.remember-me").toString()}
-              className="remember-me-label"
-            />
-            <Button
-              variant="contained"
-              className="login-button"
-              onClick={this.handleLogin}
-              disabled={isAuthenticating}
-            >
-              {isAuthenticating ? (
-                <CircularProgress color="primary" size={25} />
-              ) : (
-                t("auth.login")
-              )}
-            </Button>
+                <Button
+                  variant="contained"
+                  className="login-button"
+                  onClick={this.handleLogin}
+                  disabled={isAuthenticating}
+                >
+                  {isAuthenticating ? (
+                    <CircularProgress color="primary" size={25} />
+                  ) : (
+                    t("auth.login")
+                  )}
+                </Button>
+              </>
+            )}
+            {currentAuthType === "microsoft" && (
+              <>
+                <Button
+                  variant="contained"
+                  className="login-microsoft-button"
+                  onClick={this.handleMicrosoftLogin}
+                  disabled={isAuthenticating}
+                >
+                  {isAuthenticating ? (
+                    <CircularProgress color="primary" size={25} />
+                  ) : (
+                    t("auth.login-with-microsoft")
+                  )}
+                </Button>
+              </>
+            )}
           </div>
         )}
         {autoAuth && (

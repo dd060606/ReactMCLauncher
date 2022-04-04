@@ -35,6 +35,7 @@
     "authentication": "Authentication",
     "logging-in": "Logging in",
     "login": "Login",
+    "login-with-microsoft": "Login with Microsoft",
     "email": "E-mail",
     "password": "Password",
     "remember-me": "Remember Me"

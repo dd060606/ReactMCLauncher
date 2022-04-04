@@ -15,7 +15,7 @@ type State = {
 };
 
 type Props = {
-  navigate: NavigateFunction;
+  navigate?: NavigateFunction;
 };
 
 class Launcher extends Component<Props & WithTranslation, State> {
@@ -75,6 +75,7 @@ class Launcher extends Component<Props & WithTranslation, State> {
     const config = window.ipc.sendSync("get-dynamic-config");
     if (!config.maintenance) {
       window.ipc.send("play");
+      // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
       this.props.navigate("/updater");
     } else {
       Swal.fire({
@@ -132,6 +133,7 @@ class Launcher extends Component<Props & WithTranslation, State> {
             </button>
             <button
               className="settings-button"
+              // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
               onClick={() => this.props.navigate("/settings")}
             >
               <i className="fas fa-cog"></i>

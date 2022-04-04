@@ -9,7 +9,7 @@ import { withRouter } from "utils/withRouter";
 import { NavigateFunction } from "react-router-dom";
 
 type Props = {
-  navigate: NavigateFunction;
+  navigate?: NavigateFunction;
 };
 type State = {
   progress: number;
@@ -106,6 +106,7 @@ class Updater extends Component<Props & WithTranslation, State> {
       }
     });
     window.ipc.receive("return-to-launcher", () =>
+      // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
       this.props.navigate("/launcher")
     );
   }
@@ -119,6 +120,7 @@ class Updater extends Component<Props & WithTranslation, State> {
       confirmButtonColor: "#54c2f0",
       background: "#333",
     }).then(() => {
+      // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
       this.props.navigate("/launcher");
     });
   }

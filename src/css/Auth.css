@@ -97,7 +97,7 @@
     margin-left: 2px;
     margin-right: 5px;
 }
-.auth-box .login-button {
+.auth-box .login-button, .auth-box .login-microsoft-button {
     background-color: #56B5FC;
     text-transform: none;
     color: white;
@@ -106,8 +106,12 @@
     font-size: 18px;
     margin-bottom: 20px;
 }
-.auth-box .login-button:hover {
+.auth-box .login-button:hover, .auth-box .login-microsoft-button:hover {
     background-color: #46A9F8;
+}
+.auth-box .login-microsoft-button {
+    width: 80%;
+
 }
 
 
@@ -124,8 +128,9 @@
     
 }
 .auth-content .auto-auth-text {
-    color: white;
-    font-size: large;
+    color: black;
+    font-size: 25px;
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;

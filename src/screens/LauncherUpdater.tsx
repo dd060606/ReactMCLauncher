@@ -12,10 +12,10 @@ type State = {
   updateText: string;
 };
 type Props = {
-  navigate: NavigateFunction;
-};
+  navigate?: NavigateFunction;
+} & WithTranslation;
 
-class LauncherUpdater extends Component<Props & WithTranslation, State> {
+class LauncherUpdater extends Component<Props, State> {
   state = {
     progress: 0,
     updateText: "",
@@ -24,7 +24,6 @@ class LauncherUpdater extends Component<Props & WithTranslation, State> {
   componentDidMount() {
     const { t } = this.props;
     this.setState({ updateText: t("update.searching-updates") + "..." });
-
     window.ipc.send("check-auto-update");
 
     window.ipc.receive("set-launcher-update-progress", (percent: number) => {
@@ -54,9 +53,11 @@ class LauncherUpdater extends Component<Props & WithTranslation, State> {
             if (res.isConfirmed) {
               window.ipc.send("install-updates");
             }
+            // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
             this.props.navigate("/auth");
           });
         } else {
+          // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
           this.props.navigate("/auth");
         }
       }
@@ -69,6 +70,7 @@ class LauncherUpdater extends Component<Props & WithTranslation, State> {
         confirmButtonColor: "#54c2f0",
         background: "#333",
       }).then(() => {
+        // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
         this.props.navigate("/auth");
       });
     });
@@ -83,6 +85,7 @@ class LauncherUpdater extends Component<Props & WithTranslation, State> {
       confirmButtonColor: "#54c2f0",
       background: "#333",
     }).then(() => {
+      // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
       this.props.navigate("/auth");
     });
   }
@@ -92,10 +95,7 @@ class LauncherUpdater extends Component<Props & WithTranslation, State> {
     return (
       <div className="updater-content">
         <div className="update-box">
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/images/logo.png`}
-            alt="logo"
-          />
+          <img src={"assets/logo.png"} alt="logo" />
           <h3>{updateText}</h3>
           <LinearProgress
             variant={progress === 0 ? "indeterminate" : "determinate"}
@@ -107,6 +107,4 @@ class LauncherUpdater extends Component<Props & WithTranslation, State> {
   }
 }
 
-export default withTranslation()(
-  withRouter<Props & WithTranslation>(LauncherUpdater)
-);
+export default withTranslation()(withRouter<Props>(LauncherUpdater));

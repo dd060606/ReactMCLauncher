@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "target": "es5",
+      "target": "ES2015",
       "module": "commonjs",
       "sourceMap": true,
       "strict": true,
@@ -9,9 +9,11 @@
       "rootDir": "../",
       "noEmitOnError": true,
       "esModuleInterop": true,
-
       "typeRoots": [
         "node_modules/@types"
-      ]
-    }
-  }
+      ],
+      "skipLibCheck": true,
+
+    },
+    
+}

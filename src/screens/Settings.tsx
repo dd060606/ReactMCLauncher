@@ -31,7 +31,7 @@ type State = {
   playerName: string;
 };
 type Props = {
-  navigate: NavigateFunction;
+  navigate?: NavigateFunction;
 };
 class Settings extends Component<Props & WithTranslation, State> {
   state = {
@@ -71,6 +71,7 @@ class Settings extends Component<Props & WithTranslation, State> {
   };
   handleLogoutClick = () => {
     window.ipc.send("logout");
+    // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
     this.props.navigate("/auth");
   };
 
@@ -89,6 +90,7 @@ class Settings extends Component<Props & WithTranslation, State> {
         <div className="title-box">
           <i
             className="fas fa-arrow-left"
+            // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
             onClick={() => this.props.navigate("/launcher")}
           />
           <h1> {t("settings.settings")}</h1>

@@ -52,10 +52,7 @@ class Frame extends Component {
           {platformName !== "darwin" && (
             <div id="frame-content-windows">
               <div id="frame-title-dock">
-                <img
-                  src={`${process.env.PUBLIC_URL}/assets/images/logo.png`}
-                  alt="logo"
-                />
+                <img src={`assets/logo.png`} alt="logo" />
                 <span id="frame-title">
                   {window.ipc.sendSync("get-launcher-name")}
                 </span>
