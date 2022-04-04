@@ -15,7 +15,7 @@ export function initAuth() {
   ipc.on("auto-auth", async () => {
     if (configManager.isAutoAuthEnabled()) {
       const selectedAcc = configManager.getSelectedAccount();
-      if (selectedAcc !== null) {
+      if (selectedAcc) {
         const isValid = await authManager.validateAccount(selectedAcc);
         if (!isValid) {
           configManager.removeAuthAccount(selectedAcc.id);

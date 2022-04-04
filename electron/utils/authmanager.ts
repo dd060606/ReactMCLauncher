@@ -47,11 +47,16 @@ export async function addMicrosoftAccount() {
     });
 }
 
-export async function validateAccount(profile: Profile) {
+export async function validateAccount(profile: Profile): Promise<boolean> {
   if (msmc.validate(profile)) {
-    msmc.refresh(profile).then((result) => {
-      console.log(result);
-    });
+    const result: msmc.result = await msmc.refresh(profile);
+    if (result.profile) {
+      configManager.addAuthAccount(result.profile, "microsoft");
+      configManager.saveConfig();
+      return true;
+    } else {
+      return false;
+    }
   } else {
     return false;
   }

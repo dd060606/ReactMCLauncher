@@ -256,6 +256,9 @@ export function addAuthAccount(
 ) {
   if (config && profile._msmc) {
     config.selectedAccount = profile.id;
+    if (!config.accounts) {
+      config.accounts = {};
+    }
     config.accounts[profile.id] = {
       authType: authType,
       _msmc: {
