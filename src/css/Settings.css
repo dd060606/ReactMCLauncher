@@ -59,12 +59,7 @@
     margin-left: 35px;
 }
 
-.settings-content .MuiSlider-root {
-    color: #54c2f0;
-    height: 8px;
-    margin-left: 50px;
-    width: 70%;
-}
+
 .settings-content .settings-box .minecraft button {
     width: 300px;
     color: white;
@@ -74,28 +69,7 @@
     text-transform: none;
 }
 
-.settings-content .MuiSlider-root  .MuiSlider-thumb {
-    height: 24px;
-    width: 24px;
-    background-color: white;
-    border: 2px solid currentColor;
-    margin-top: -8px;
-    margin-left: -12px;
-}
-.settings-content .MuiSlider-root .MuiSlider-thumb:focus,.settings-content .MuiSlider-root .MuiSlider-thumb:hover, .settings-content .MuiSlider-root .MuiSlider-thumb:active {
-    box-shadow: inherit;
-}
-.settings-content .MuiSlider-root .MuiSlider-valueLabel {
-    left: calc(-50% + 4px);
-}
-.settings-content .MuiSlider-root .MuiSlider-track {
-    height: 8px;
-    border-radius: 4px;
-}
-.settings-content .MuiSlider-root .MuiSlider-rail	 {
-    height: 8px;
-    border-radius: 4px;
-}
+
 .settings-content .switch-label {
     color: white;
     align-self: flex-start;

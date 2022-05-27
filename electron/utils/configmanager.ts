@@ -243,10 +243,8 @@ export function getAuthAccount(uuid: string) {
 /**
  * Adds an authenticated account to the database to be stored.
  *
- * @param {string} uuid The uuid of the authenticated account.
- * @param {string} accessToken The accessToken of the authenticated account.
- * @param {string} username The username (usually email) of the authenticated account.
- * @param {string} name The in game name of the authenticated account.
+ * @param {Profile} profile The profile object of the authenticated account.
+ * @param {string} authType The auth type of the authenticated account.
  *
  * @returns {Object} The authenticated account object created by this action.
  */

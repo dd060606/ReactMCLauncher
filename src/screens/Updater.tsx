@@ -130,10 +130,7 @@ class Updater extends Component<Props & WithTranslation, State> {
     return (
       <div className="updater-content">
         <div className="update-box">
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/images/logo.png`}
-            alt="logo"
-          />
+          <img src={`assets/logo.png`} alt="logo" />
           <h3>{updateText}</h3>
           <LinearProgress
             variant={progress === 0 ? "indeterminate" : "determinate"}

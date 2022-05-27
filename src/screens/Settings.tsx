@@ -2,26 +2,17 @@ import { Component } from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 import "i18n";
 import "css/Settings.css";
-import { Slider, Button, FormControlLabel, Switch } from "@mui/material";
+import {
+  Slider,
+  Button,
+  FormControlLabel,
+  Switch,
+  styled,
+} from "@mui/material";
 
 import { withRouter } from "utils/withRouter";
 import { NavigateFunction } from "react-router-dom";
 
-/*
-const LauncherSwitch = makeStyles({
-  switchBase: {
-    color: "#56B5FC",
-    "&$checked": {
-      color: "#56B5FC",
-    },
-    "&$checked + $track": {
-      backgroundColor: "#56B5FC",
-    },
-  },
-  checked: {},
-  track: {},
-})(Switch);
-*/
 type State = {
   memory: number;
   availableMemory: number;
@@ -33,6 +24,60 @@ type State = {
 type Props = {
   navigate?: NavigateFunction;
 };
+
+const LauncherSwitch = styled(Switch)(({ theme }) => ({
+  "& .MuiSwitch-switchBase.Mui-checked": {
+    color: "#54c2f0",
+    "&:hover": {
+      backgroundColor: "rgba(84, 194,240,0.1)",
+    },
+  },
+  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+    backgroundColor: "#54c2f0",
+  },
+}));
+
+const LauncherSlider = styled(Slider)({
+  color: "#54c2f0",
+  width: "80%",
+  justifySelf: "center",
+  alignSelf: "center",
+  height: 8,
+  "& .MuiSlider-track": {
+    border: "none",
+  },
+  "& .MuiSlider-thumb": {
+    height: 24,
+    width: 24,
+    backgroundColor: "#fff",
+    border: "2px solid currentColor",
+    "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
+      boxShadow: "inherit",
+    },
+    "&:before": {
+      display: "none",
+    },
+  },
+  "& .MuiSlider-valueLabel": {
+    lineHeight: 1.2,
+    fontSize: 12,
+    background: "unset",
+    padding: 0,
+    width: 32,
+    height: 32,
+    borderRadius: "50% 50% 50% 0",
+    backgroundColor: "#54c2f0",
+    transformOrigin: "bottom left",
+    transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
+    "&:before": { display: "none" },
+    "&.MuiSlider-valueLabelOpen": {
+      transform: "translate(50%, -100%) rotate(-45deg) scale(1)",
+    },
+    "& > *": {
+      transform: "rotate(45deg)",
+    },
+  },
+});
 class Settings extends Component<Props & WithTranslation, State> {
   state = {
     memory: 0,
@@ -102,7 +147,7 @@ class Settings extends Component<Props & WithTranslation, State> {
             <h4>
               {t("settings.memory")}: {memory}G
             </h4>
-            <Slider
+            <LauncherSlider
               valueLabelDisplay="auto"
               max={availableMemory}
               min={1}
@@ -119,7 +164,7 @@ class Settings extends Component<Props & WithTranslation, State> {
             <FormControlLabel
               className="switch-label"
               control={
-                <Switch
+                <LauncherSwitch
                   checked={autoAuth}
                   onChange={this.handleAutoAuthChange}
                 />
@@ -130,7 +175,7 @@ class Settings extends Component<Props & WithTranslation, State> {
             <FormControlLabel
               className="switch-label"
               control={
-                <Switch
+                <LauncherSwitch
                   checked={keepLauncherOpen}
                   onChange={this.handleKeepLauncherOpenChange}
                 />

@@ -92,6 +92,9 @@
     padding: 5px;
 
  }
+ .launcher-content .play-box .settings-button > i {
+    font-size: 33px;
+ }
 .launcher-content .external-links {
     display: flex;
     justify-content: center;

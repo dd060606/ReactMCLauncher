@@ -97,10 +97,7 @@ class Launcher extends Component<Props & WithTranslation, State> {
     const { playerUuid, playerName, playersCount, serverStatus } = this.state;
     return (
       <div className="launcher-content">
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/images/logo.png`}
-          alt="logo"
-        />
+        <img src={`assets/logo.png`} alt="logo" />
         <div className="player-box">
           <div className="head-box">
             <img
@@ -148,7 +145,7 @@ class Launcher extends Component<Props & WithTranslation, State> {
               onClick={() => this.handleOpenExternalLink("discord")}
             >
               <img
-                src={`${process.env.PUBLIC_URL}/assets/images/discord.png`}
+                src={`assets/discord.png`}
                 alt="discord"
                 className="external-link-img"
               />
@@ -160,7 +157,7 @@ class Launcher extends Component<Props & WithTranslation, State> {
               onClick={() => this.handleOpenExternalLink("twitter")}
             >
               <img
-                src={`${process.env.PUBLIC_URL}/assets/images/twitter.png`}
+                src={`assets/twitter.png`}
                 alt="twitter"
                 className="external-link-img"
               />
@@ -172,7 +169,7 @@ class Launcher extends Component<Props & WithTranslation, State> {
               onClick={() => this.handleOpenExternalLink("youtube")}
             >
               <img
-                src={`${process.env.PUBLIC_URL}/assets/images/youtube.png`}
+                src={`assets/youtube.png`}
                 alt="youtube"
                 className="external-link-img"
               />

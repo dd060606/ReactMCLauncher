@@ -7,6 +7,7 @@ import * as configManager from "./utils/configmanager";
 
 import { autoUpdater } from "electron-updater";
 import { initAuth } from "./auth";
+import { initGame } from "./game";
 import log from "electron-log";
 console.log = log.log;
 autoUpdater.logger = log;
@@ -42,7 +43,7 @@ app.whenReady().then(() => {
   }, 15000);
   initMainIPC();
   initAuth();
-  //game.init();
+  initGame();
   console.log("Launcher version: " + app.getVersion());
 
   app.on("activate", () => {

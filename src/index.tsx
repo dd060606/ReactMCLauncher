@@ -1,4 +1,3 @@
-import "index.css";
 import reportWebVitals from "reportWebVitals";
 
 import React from "react";
@@ -11,6 +10,8 @@ import Updater from "screens/Updater";
 import Settings from "screens/Settings";
 
 import LauncherUpdater from "screens/LauncherUpdater";
+import "index.css";
+import "fontawesome.css";
 declare global {
   interface Window {
     ipc: {
