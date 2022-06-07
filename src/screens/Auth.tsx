@@ -13,12 +13,10 @@ import { NavigateFunction } from "react-router-dom";
 import Swal from "sweetalert2";
 
 type State = {
-  showPassword: boolean;
   currentAuthType: string;
   isAuthenticating: boolean;
   rememberMe: boolean;
-  email: string;
-  password: string;
+  username: string;
   autoAuth: boolean;
 };
 type Props = {
@@ -27,12 +25,10 @@ type Props = {
 
 class Auth extends Component<Props & WithTranslation, State> {
   state = {
-    showPassword: false,
     currentAuthType: "microsoft",
     isAuthenticating: false,
     rememberMe: true,
-    email: "",
-    password: "",
+    username: "",
     autoAuth: true,
   };
 
@@ -61,84 +57,6 @@ class Auth extends Component<Props & WithTranslation, State> {
     });
   }
 
-  /**
-   * Parses an error and returns a user-friendly title and description
-   * for our error overlay.
-   *
-   * @param {Error | {cause: string, error: string, errorMessage: string}} err A Node.js
-   * error or Mojang error response.
-   */
-  resolveError(err: string) {
-    /*
-    // Mojang Response => err.cause | err.error | err.errorMessage
-    // Node error => err.code | err.message
-    if (err.cause != null && err.cause === "UserMigratedException") {
-      return {
-        title: t("auth.errors.userMigrated.title"),
-        desc: t("auth.errors.userMigrated.desc"),
-      };
-    } else {
-      if (err.error != null) {
-        if (err.error === "ForbiddenOperationException") {
-          if (err.errorMessage != null) {
-            if (
-              err.errorMessage ===
-              "Invalid credentials. Invalid username or password."
-            ) {
-              return {
-                title: t("auth.errors.invalidCredentials.title"),
-                desc: t("auth.errors.invalidCredentials.desc"),
-              };
-            } else if (err.errorMessage === "Invalid credentials.") {
-              return {
-                title: t("auth.errors.rateLimit.title"),
-                desc: t("auth.errors.rateLimit.desc"),
-              };
-            }
-          }
-        }
-      } else {
-        // Request errors (from Node).
-        if (err.code != null) {
-          if (err.code === "ENOENT") {
-            // No Internet.
-            return {
-              title: t("auth.errors.noInternet.title"),
-              desc: t("auth.errors.noInternet.desc"),
-            };
-          } else if (err.code === "ENOTFOUND") {
-            // Could not reach server.
-            return {
-              title: t("auth.errors.authDown.title"),
-              desc: t("auth.errors.authDown.desc"),
-            };
-          }
-        }
-      }
-    }
-    if (err.message != null) {
-      if (err.message === "NotPaidAccount") {
-        return {
-          title: t("auth.errors.notPaid.title"),
-          desc: t("auth.errors.notPaid.desc"),
-        };
-      } else {
-        // Unknown error with request.
-        return {
-          title: t("auth.errors.unknown.title"),
-          desc: err.message,
-        };
-      }
-    } else {
-      // Unknown Mojang error.
-      return {
-        title: err.error,
-        desc: err.errorMessage,
-      };
-    }
-    */
-  }
-
   openErrorBox(message: string, title: string = "") {
     const { t } = this.props;
     title = !title ? t("error") : title;
@@ -155,21 +73,19 @@ class Auth extends Component<Props & WithTranslation, State> {
 
   //Arrow fx for binding
 
-  handleLogin = () => {
+  handleOfflineLogin = () => {
     const { t } = this.props;
-    const { email, password, rememberMe } = this.state;
+    const { username, rememberMe } = this.state;
     const usernameRegex = /^[a-zA-Z0-9_]{1,16}$/;
-    const emailRegex = /^\S+@\S+\.\S+$/;
     this.setState({ isAuthenticating: true });
 
-    if (!email || !password) {
+    if (!username) {
       this.openErrorBox(t("auth.errors.complete-all-fields"));
-    } else if (!usernameRegex.test(email) && !emailRegex.test(email)) {
+    } else if (!usernameRegex.test(username)) {
       this.openErrorBox(t("auth.errors.wrong-username"));
     } else {
-      window.ipc.send("mojang-login", {
-        username: email,
-        password: password,
+      window.ipc.send("offline-login", {
+        username: username,
         autoAuth: rememberMe,
       });
     }
@@ -179,19 +95,17 @@ class Auth extends Component<Props & WithTranslation, State> {
     const { isAuthenticating, rememberMe } = this.state;
     if (!isAuthenticating) {
       this.setState({ isAuthenticating: true });
-      window.ipc.send("microsoft-login", { autoAuth: rememberMe });
+      window.ipc.send("microsoft-login", rememberMe);
     }
   };
 
   render() {
     const { t } = this.props;
     const {
-      showPassword,
       currentAuthType,
       isAuthenticating,
       rememberMe,
-      email,
-      password,
+      username,
       autoAuth,
     } = this.state;
     return (
@@ -231,41 +145,18 @@ class Auth extends Component<Props & WithTranslation, State> {
                 {" "}
                 <div className="fields">
                   <div className="field">
-                    <i className="fas fa-envelope"></i>
+                    <i className="fas fa-user"></i>
                     <input
                       disabled={isAuthenticating}
                       type="text"
                       name="username-field"
                       id="username-field"
-                      placeholder={t("auth.email")}
-                      value={email}
+                      placeholder={t("auth.username")}
+                      value={username}
                       onChange={(event) =>
-                        this.setState({ email: event.target.value })
+                        this.setState({ username: event.target.value })
                       }
                     />
-                    <span className="underline-animation"></span>
-                  </div>
-                  <div className="field">
-                    <i className="fas fa-lock-alt"></i>
-                    <input
-                      disabled={isAuthenticating}
-                      type={`${showPassword ? "text" : "password"}`}
-                      name="password-field"
-                      id="password-field"
-                      placeholder={t("auth.password")}
-                      value={password}
-                      onChange={(event) =>
-                        this.setState({ password: event.target.value })
-                      }
-                    />
-                    <i
-                      className={`fal ${
-                        showPassword ? "fa-eye" : "fa-eye-slash"
-                      }`}
-                      onClick={() =>
-                        this.setState({ showPassword: !showPassword })
-                      }
-                    ></i>
                     <span className="underline-animation"></span>
                   </div>
                 </div>
@@ -288,7 +179,7 @@ class Auth extends Component<Props & WithTranslation, State> {
                 <Button
                   variant="contained"
                   className="login-button"
-                  onClick={this.handleLogin}
+                  onClick={this.handleOfflineLogin}
                   disabled={isAuthenticating}
                 >
                   {isAuthenticating ? (

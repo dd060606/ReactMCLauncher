@@ -15,7 +15,7 @@ export const MC_VERSION = "1.12.2";
 export const FORGE_VERSION = "14.23.5.2855";
 export const JRE_WINDOWS = "https://dd06-dev.fr/dl/jre/jre-windows.zip";
 export const JRE_LINUX = "https://dd06-dev.fr/dl/jre/jre-linux.zip";
-export const MODS_URL = "https://dd06-dev.fr/dl/react-mc-launcher/mods.json";
+export const MODS_URL = "";
 
 const sysRoot =
   process.env.APPDATA ||
@@ -306,8 +306,8 @@ export function removeAuthAccount(uuid: string) {
  * @returns {Object} The selected authenticated account.
  */
 export function getSelectedAccount() {
-  if (config?.accounts && config.selectedAccount) {
-    return config.accounts[config.selectedAccount];
+  if (config?.accounts !== undefined && config.selectedAccount !== undefined) {
+    return config?.accounts[config.selectedAccount];
   } else {
     return null;
   }

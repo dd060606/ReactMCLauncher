@@ -1,6 +1,6 @@
 {
   "name": "react-ts-mc-launcher",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "homepage": ".",
   "main": "build/electron/main.js",
@@ -72,7 +72,7 @@
     "@types/react-dom": "^17.0.13",
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",
-    "electron": "^18.0.1",
+    "electron": "^19.0.3",
     "electron-builder": "^22.14.13",
     "wait-on": "^6.0.1"
   }

@@ -2,7 +2,9 @@ import * as msmc from "msmc";
 import type { profile } from "msmc";
 import Logger from "./logger";
 import { win } from "../main";
-import * as configManager from "./configmanager";
+import type * as ConfigManagerTypes from "./configmanager";
+//Global module
+const configManager: typeof ConfigManagerTypes = require("./configmanager");
 
 export type Profile = profile & {
   _msmc?: { refresh: string; expires_by: number; mcToken: string };
@@ -60,4 +62,21 @@ export async function validateAccount(profile: Profile): Promise<boolean> {
   } else {
     return false;
   }
+}
+
+export function addOfflineAccount(username: string) {
+  const offlineProfile: Profile = {
+    id: "offline",
+    name: username,
+    xuid: "offline",
+    _msmc: {
+      mcToken: "offline",
+      refresh: "offline",
+      expires_by: 0,
+    },
+  };
+  configManager.addAuthAccount(offlineProfile, "offline");
+  configManager.saveConfig();
+
+  win?.webContents.send("auth-success");
 }

@@ -3,8 +3,6 @@ import * as path from "path";
 import isDev from "electron-is-dev";
 import { initMainIPC } from "./mainIPC";
 
-import * as configManager from "./utils/configmanager";
-
 import { autoUpdater } from "electron-updater";
 import { initAuth } from "./auth";
 import { initGame } from "./game";
@@ -12,6 +10,9 @@ import log from "electron-log";
 console.log = log.log;
 autoUpdater.logger = log;
 
+import type * as ConfigManagerTypes from "./utils/configmanager";
+//Global module
+const configManager: typeof ConfigManagerTypes = require("./utils/configmanager");
 const LAUNCHER_NAME = "ReactMCLauncher";
 
 let win: BrowserWindow | null = null;

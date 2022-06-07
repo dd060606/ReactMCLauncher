@@ -190,7 +190,7 @@ class Settings extends Component<Props & WithTranslation, State> {
             <div className="account-box">
               <div>
                 <img
-                  src={`https://crafatar.com/avatars/${playerUuid}?size=50&overlay=true`}
+                  src={`https://mc-heads.net/avatar/${playerUuid}/50`}
                   alt="player-head"
                   className="player-head"
                 />

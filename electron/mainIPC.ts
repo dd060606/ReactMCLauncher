@@ -3,10 +3,13 @@ import { win } from "./main";
 
 import Logger from "./utils/logger";
 import os from "os";
-import * as configManager from "./utils/configmanager";
+
 import type { DynaConfig } from "./utils/configmanager";
 import { ping } from "minecraft-server-ping";
 
+import type * as ConfigManagerTypes from "./utils/configmanager";
+//Global module
+const configManager: typeof ConfigManagerTypes = require("./utils/configmanager");
 const logger = new Logger("[Launcher]");
 
 function initMainIPC() {

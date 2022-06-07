@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "configurations": [
+    {
+      "name": "Debug Main Process",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/node_modules/electron/cli.js",
+      "args" : ["."],
+      "outputCapture": "std"
+    }
+  ]
+}

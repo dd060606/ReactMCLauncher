@@ -1,5 +1,5 @@
 import { win } from "./main";
-import * as configManager from "./utils/configManager";
+
 import { Client } from "minecraft-launcher-core";
 import { ipcMain as ipc } from "electron";
 import * as path from "path";
@@ -9,6 +9,10 @@ import AdmZip from "adm-zip";
 import crypto from "crypto";
 import Logger from "./utils/logger";
 import ChildProcess from "child_process";
+
+import type * as ConfigManagerTypes from "./utils/configmanager";
+//Global module
+const configManager: typeof ConfigManagerTypes = require("./utils/configmanager");
 
 type Progress = { type: string; task: number; total: number };
 
@@ -70,14 +74,14 @@ async function updateAndLaunch() {
       const opts = {
         clientPackage: undefined,
         authorization: {
-          access_token: configManager?.getSelectedAccount()?._msmc?.mcToken
-            ? (configManager?.getSelectedAccount()?._msmc?.mcToken as string)
+          access_token: configManager.getSelectedAccount()?._msmc?.mcToken
+            ? (configManager.getSelectedAccount()?._msmc?.mcToken as string)
             : "",
-          client_token: configManager?.getClientToken()
+          client_token: configManager.getClientToken()
             ? (configManager.getClientToken() as string)
             : "",
-          uuid: configManager?.getSelectedAccount()?.id as string,
-          name: configManager?.getSelectedAccount()?.name as string,
+          uuid: configManager.getSelectedAccount()?.id as string,
+          name: configManager.getSelectedAccount()?.name as string,
           user_properties: {},
         },
         root: configManager.getGameDirectory(),
