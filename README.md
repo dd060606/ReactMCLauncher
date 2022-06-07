@@ -1,4 +1,4 @@
-<p align="center"><img src="./public/assets/images/logo.png" width="150px" height="150px" alt="logo"></p>
+<p align="center"><img src="./public/assets/logo.png" width="150px" height="150px" alt="logo"></p>
 
 <h1 align="center">React MCLauncher</h1>
 
